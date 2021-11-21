@@ -1,1 +1,27 @@
-<p>moedas works!</p>
+<table class="table table-bordered"  width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th> Moeda </th>
+            <th> Onde Comprar </th>
+            <th> Onde Vender </th>
+            <th> Preço de Custo </th>
+            <th> Preço de Venda </th>
+            <th> LUCRO % </th>
+            
+        </tr>
+    </thead>                                    
+    <tbody>
+
+        <tr *ngFor="let moeda of moBinMexc; let i=index">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.pdVdM }} </td>
+            <td> {{ moeda.pdCpB }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+            
+     </tbody>
+</table>
+
+

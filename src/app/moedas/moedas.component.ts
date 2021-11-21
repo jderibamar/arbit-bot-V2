@@ -8,22 +8,28 @@ const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUS
 })
 export class MoedasComponent implements OnInit 
 {
+    moBinMexc = []
+    pdCpB = 0
+    pdVdB = 0
+    pdCpM = 0
+    pdVdM = 0
+      
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void 
-  {
-    setInterval( () => 
-    { 
-        this.crexBinance() 
-        console.log('--------------------------------------------------------------------------------------------------')
-    }, 7000)
-    setInterval( () => { this.binanceMexc() }, 7000)
-    
-    // this.crexBinance()
-  }
+    ngOnInit(): void 
+    {
+        setInterval( () => 
+        { 
+            this.crexBinance() 
+            console.log('--------------------------------------------------------------------------------------------------')
+        }, 7000)
+        setInterval( () => { this.binanceMexc() }, 7000)
+        
+        // this.crexBinance()
+    }
 
-  async crexBinance()
+    async crexBinance()
     {
         let api_crex = 'https://api.crex24.com/v2/public/tickers'
         let res_crex = await fetch(api_crex)
@@ -53,10 +59,10 @@ export class MoedasComponent implements OnInit
                 if(moB[i].symbol === moC[j].instrument && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
                     moComuns
                     .push(
-                     { 
-                          symbol: moB[i].symbol, prCpB: moB[i].bidPrice, prVdB: moB[i].askPrice, 
-                          moCsymbol: moC[j].instrument, moCPrCp: moC[j].bid, moCPrVd: moC[j].ask
-                     })
+                        { 
+                            symbol: moB[i].symbol, prCpB: moB[i].bidPrice, prVdB: moB[i].askPrice, 
+                            moCsymbol: moC[j].instrument, moCPrCp: moC[j].bid, moCPrVd: moC[j].ask
+                        })
             }
         }
 
@@ -84,7 +90,7 @@ export class MoedasComponent implements OnInit
                     console.log('Comprar ', moComuns[i].symbol, 'na Crex por: ', prVdC, ' e vender na Binance por: ', prCpB, ' Lucro: ', lucro)
             }
         }
-       
+        
     }
        
     async binanceMexc()
@@ -97,12 +103,14 @@ export class MoedasComponent implements OnInit
         let binApiData = await this.apiBin()
         let moB = binApiData
         let moComuns = []
+        let arrPrintar = []     
 
         let pdCpB = 0
         let pdVdB = 0
         let pdCpM = 0
         let pdVdM = 0
         let lucro = 0
+        let sy = ''
 
         for(let i in respJson.data)
         {
@@ -132,22 +140,42 @@ export class MoedasComponent implements OnInit
             pdVdB = moComuns[i].prVdB
             pdCpM = moComuns[i].moMPrCp
             pdVdM = moComuns[i].moMPrVd
-
-            if(pdCpM > pdVdB && pdVdB > 0)
-            {
-                lucro = (pdCpM - pdVdB) / pdVdB * 100
-                if(lucro > 2)
-                    console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
-            }
+            sy = moComuns[i].symbol
             
             if(pdCpB > pdVdM && pdVdM > 0) 
             {
                 lucro = (pdCpB - pdVdM) / pdVdM * 100
 
                 if(lucro >= 2)
-                    console.log('Comprar ', moComuns[i].symbol, 'na MEXC por: ', pdVdM, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)
+                {
+                    arrPrintar
+                    .push(
+                        { 
+                           symbol: sy, pdCpB: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpM: moComuns[i].moMPrCp, pdVdM: moComuns[i].moMPrVd, excCp: 'Binance', excVd: 'MEXC', lucro: lucro
+                        })
+                    // console.log('Comprar ', moComuns[i].symbol, 'na MEXC por: ', pdVdM, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)
+                }
+
             }
+           
+            if(pdCpM > pdVdB && pdVdB > 0)
+            {
+                lucro = (pdCpM - pdVdB) / pdVdB * 100
+                if(lucro > 2)
+                {
+                    arrPrintar
+                    .push(
+                        { 
+                           symbol: moComuns[i].symbol, pdCpB: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpM: moComuns[i].moMPrCp, pdVdM: moComuns[i].moMPrVd, excCp: 'MEXC', excVd: 'Binance', lucro: lucro
+                        })
+                    // console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
+                }
+            }
+           
         }
+        this.moBinMexc = arrPrintar
     }
 
     async binanceCryptoCom()
