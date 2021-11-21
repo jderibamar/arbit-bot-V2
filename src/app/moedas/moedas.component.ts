@@ -9,11 +9,7 @@ const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUS
 export class MoedasComponent implements OnInit 
 {
     moBinMexc = []
-    pdCpB = 0
-    pdVdB = 0
-    pdCpM = 0
-    pdVdM = 0
-      
+    moBinCrex = []       
 
     constructor() { }
 
@@ -21,7 +17,7 @@ export class MoedasComponent implements OnInit
     {
         setInterval( () => 
         { 
-            this.crexBinance() 
+            this.binanceCrex() 
             console.log('--------------------------------------------------------------------------------------------------')
         }, 7000)
         setInterval( () => { this.binanceMexc() }, 7000)
@@ -29,7 +25,7 @@ export class MoedasComponent implements OnInit
         // this.crexBinance()
     }
 
-    async crexBinance()
+    async binanceCrex()
     {
         let api_crex = 'https://api.crex24.com/v2/public/tickers'
         let res_crex = await fetch(api_crex)
@@ -40,7 +36,8 @@ export class MoedasComponent implements OnInit
         let prCpC = 0
         let prVdB = 0
         let prVdC = 0
-        let lucro = 0        
+        let lucro = 0
+        let arrPrintar = []     
 
         let binApiData = await this.apiBin()
         let moB = [] 
@@ -79,7 +76,15 @@ export class MoedasComponent implements OnInit
             {
                 lucro = (prCpC - prVdB) / prVdB * 100
                 if(lucro > 2)
-                    console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', prVdB, 'e vender na Crex por: ', prCpC, ' Lucro: ', lucro)
+                {
+                    arrPrintar
+                    .push(
+                        { 
+                           symbol: moComuns[i].symbol, pdCp: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpC: moComuns[i].moCPrCp, pdVd: moComuns[i].moCPrVd, excCp: 'Binance', excVd: 'Crex24', lucro: lucro
+                        })
+                        console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', prVdB, 'e vender na Crex por: ', prCpC, ' Lucro: ', lucro)    
+                }
             }
             
             if(prCpB > prVdC && prVdC > 0) 
@@ -87,9 +92,19 @@ export class MoedasComponent implements OnInit
                 lucro = (prCpB - prVdC) / prVdC * 100
 
                 if(lucro >= 2)
-                    console.log('Comprar ', moComuns[i].symbol, 'na Crex por: ', prVdC, ' e vender na Binance por: ', prCpB, ' Lucro: ', lucro)
+                {
+                    arrPrintar
+                    .push(
+                        { 
+                           symbol: moComuns[i].symbol, pdCp: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpC: moComuns[i].moCPrCp, pdVd: moComuns[i].moCPrVd, excCp: 'Crex24', excVd: 'Binance', lucro: lucro
+                        })
+                        console.log('Comprar ', moComuns[i].symbol, 'na Crex por: ', prVdC, ' e vender na Binance por: ', prCpB, ' Lucro: ', lucro)     
+                }                    
             }
         }
+
+        this.moBinCrex = arrPrintar
         
     }
        
@@ -110,7 +125,6 @@ export class MoedasComponent implements OnInit
         let pdCpM = 0
         let pdVdM = 0
         let lucro = 0
-        let sy = ''
 
         for(let i in respJson.data)
         {
@@ -140,7 +154,6 @@ export class MoedasComponent implements OnInit
             pdVdB = moComuns[i].prVdB
             pdCpM = moComuns[i].moMPrCp
             pdVdM = moComuns[i].moMPrVd
-            sy = moComuns[i].symbol
             
             if(pdCpB > pdVdM && pdVdM > 0) 
             {
@@ -151,10 +164,10 @@ export class MoedasComponent implements OnInit
                     arrPrintar
                     .push(
                         { 
-                           symbol: sy, pdCpB: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
-                           pdCpM: moComuns[i].moMPrCp, pdVdM: moComuns[i].moMPrVd, excCp: 'Binance', excVd: 'MEXC', lucro: lucro
+                           symbol: moComuns[i].symbol, pdCp: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpM: moComuns[i].moMPrCp, pdVd: moComuns[i].moMPrVd, excCp: 'Binance', excVd: 'MEXC', lucro: lucro
                         })
-                    // console.log('Comprar ', moComuns[i].symbol, 'na MEXC por: ', pdVdM, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)
+                    console.log('Comprar ', moComuns[i].symbol, 'na MEXC por: ', pdVdM, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)
                 }
 
             }
@@ -167,10 +180,10 @@ export class MoedasComponent implements OnInit
                     arrPrintar
                     .push(
                         { 
-                           symbol: moComuns[i].symbol, pdCpB: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
-                           pdCpM: moComuns[i].moMPrCp, pdVdM: moComuns[i].moMPrVd, excCp: 'MEXC', excVd: 'Binance', lucro: lucro
+                           symbol: moComuns[i].symbol, pdCp: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
+                           pdCpM: moComuns[i].moMPrCp, pdVd: moComuns[i].moMPrVd, excCp: 'MEXC', excVd: 'Binance', lucro: lucro
                         })
-                    // console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
+                    console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
                 }
             }
            
