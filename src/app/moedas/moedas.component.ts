@@ -78,7 +78,7 @@ export class MoedasComponent implements OnInit
                 if(lucro > 2)
                 {
                     arrPrintar
-                    .push({ symbol: moComuns[i].symbol, pdCp: prCpC, pdVd: prVdB, excCp: 'Crex24', excVd: 'Binance', lucro: lucro })
+                    .push({ symbol: moComuns[i].symbol, pdCp: prCpC, pdVd: prVdB, excCp: 'Binance', excVd: 'Crex24', lucro: lucro })
                            // console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', prVdB, 'e vender na Crex por: ', prCpC, ' Lucro: ', lucro)    
                 }
             }
@@ -154,7 +154,7 @@ export class MoedasComponent implements OnInit
                 if(lucro >= 2)
                 {
                     arrPrintar
-                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpB, pdVd: pdVdM, excCp: 'Binance', excVd: 'MEXC', lucro: lucro })
+                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpB, pdVd: pdVdM, excCp: 'MEXC', excVd: 'Binance', lucro: lucro })
                     // console.log('Comprar ', moComuns[i].symbol, 'na MEXC por: ', pdVdM, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)
                 }
             }
@@ -165,7 +165,7 @@ export class MoedasComponent implements OnInit
                 if(lucro > 2)
                 {
                     arrPrintar
-                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpM, pdVd: pdVdB, excCp: 'MEXC', excVd: 'Binance', lucro: lucro })
+                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpM, pdVd: pdVdB, excCp: 'Binance', excVd: 'MEXC', lucro: lucro })
                     // console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
                 }
             }
