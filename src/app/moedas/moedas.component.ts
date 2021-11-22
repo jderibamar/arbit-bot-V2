@@ -165,12 +165,8 @@ export class MoedasComponent implements OnInit
                 if(lucro > 2)
                 {
                     arrPrintar
-                    .push(
-                        { 
-                           symbol: moComuns[i].symbol, pdCp: moComuns[i].prCpB, pdVdB: moComuns[i].prVdB, 
-                           pdCpM: moComuns[i].moMPrCp, pdVd: moComuns[i].moMPrVd, excCp: 'MEXC', excVd: 'Binance', lucro: lucro
-                        })
-                    console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
+                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpM, pdVd: pdVdB, excCp: 'MEXC', excVd: 'Binance', lucro: lucro })
+                    // console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na MEXC por: ', pdCpM, ' Lucro: ', lucro)
                 }
             }
            
