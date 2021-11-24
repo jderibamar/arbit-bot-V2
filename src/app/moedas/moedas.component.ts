@@ -9,20 +9,17 @@ const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUS
 export class MoedasComponent implements OnInit 
 {
     moBinMexc = []
-    moBinCrex = []       
+    moBinCrex = []  
+    moBinAscendEX = []
 
     constructor() { }
 
     ngOnInit(): void 
     {
-        setInterval( () => 
-        { 
-            this.binanceCrex() 
-            console.log('--------------------------------------------------------------------------------------------------')
-        }, 7000)
+        setInterval( () => { this.binanceCrex() }, 7000)
         setInterval( () => { this.binanceMexc() }, 5000)
+        setInterval( () => { this.binanceAscendex() }, 5000)
         
-        // this.crexBinance()
     }
 
     async binanceCrex()
@@ -172,6 +169,84 @@ export class MoedasComponent implements OnInit
            
         }
         this.moBinMexc = arrPrintar
+    }
+
+    async binanceAscendex()
+    {
+        let apiAscendex = 'https://ascendex.com/api/pro/v1/spot/ticker'
+        let ascData = await fetch(apiAscendex)
+        let ascDados = await ascData.json()
+
+        for(let i in ascDados.data)
+        {
+            ascDados.data[i].symbol = ascDados.data[i].symbol.replace('/', '')
+        }
+        
+        let moA = ascDados.data
+        let moComuns = []        
+        let pdCpB = 0
+        let pdVdB = 0
+        let pdCpA = 0
+        let pdVdA = 0
+        let lucro = 0
+        let arrPrintar = []     
+
+        let binApiData = await this.apiBin()
+        let moB = [] 
+            moB = binApiData // lista de moedas da Binance
+
+       
+        for(let i in moB) //laço para extrair apenas as moedas comuns
+        {
+            for(let j in moA)
+            {
+                if(moB[i].symbol === moA[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpB: moB[i].bidPrice, pdVdB: moB[i].askPrice, 
+                            pdCpA: moA[j].bid[0], pdVdA: moA[j].ask[0]
+                        })
+            }
+        }
+
+        this.exlcuirMoeda(moComuns)
+
+        for(let i in moComuns)
+        {
+            pdCpB = moComuns[i].pdCpB
+            pdVdB = moComuns[i].pdVdB
+            pdCpA = moComuns[i].pdCpA 
+            pdVdA = moComuns[i].prVdA
+
+            if(pdCpA > pdVdB && pdVdB > 0)
+            {
+                lucro = (pdCpA - pdVdB) / pdVdB * 100
+                if(lucro > 2)
+                {
+                    arrPrintar
+                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpA, pdVd: pdVdB, excCp: 'Binance', excVd: 'AscendEX', lucro: lucro })
+                        //    console.log('Comprar ', moComuns[i].symbol, 'na Binance por: ', pdVdB, 'e vender na AscendEX por: ', pdCpA, ' Lucro: ', lucro)    
+                }
+            }
+            
+            if(pdCpB > pdVdA && pdVdA > 0) 
+            {
+                lucro = (pdCpB - pdVdA) / pdVdA * 100
+
+                if(lucro >= 2)
+                {
+                    arrPrintar
+                    .push({ symbol: moComuns[i].symbol, pdCp: pdCpB, pdVd: pdVdA, excCp: 'AscendEX', excVd: 'Binance', lucro: lucro })
+                        // console.log('Comprar ', moComuns[i].symbol, 'na AscendEX por: ', pdVdA, ' e vender na Binance por: ', pdCpB, ' Lucro: ', lucro)     
+                }                    
+            }
+        }
+
+        this.moBinAscendEX = arrPrintar
+
+        // console.log('Dados AscendEX: ', ascDados.data)
+        // console.log('Comuns Binance / Ascendex: ', moComuns)
     }
 
     async binanceCryptoCom()
