@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUSDT', 'SUPERBTC', 'EPSBTC', 'OMGBTC', 'KEYUSDT', 'QIUSDT']  //Lista de moedas falsa-positva 
+const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUSDT', 'SUPERBTC', 'EPSBTC', 'OMGBTC', 'QIUSDT']  //Lista de moedas falsa-positva 
 
 @Component({
   selector: 'app-moedas',
@@ -16,6 +16,8 @@ export class MoedasComponent implements OnInit
     moBinCoinex = []
     moBinCrosstower = []
     moBinCoinsbit = []
+    moBinXt = []
+    moBinBittrex = []
 
     constructor() { }
 
@@ -27,8 +29,10 @@ export class MoedasComponent implements OnInit
         setInterval( () => { this.binanceBitbank() }, 5000)
         setInterval( () => { this.binanceCoinex() }, 5000)
         setInterval( () => { this.binanceCrossTower() }, 5000)
-
-        this.binanceCoinsbit()
+        setInterval( () => { this.binanceCoinsbit() }, 5000)
+        setInterval( () => { this.binanceXt() }, 5000)
+        setInterval( () => { this.binanceBittrex() }, 5000)
+        
         
     }
 
@@ -77,7 +81,8 @@ export class MoedasComponent implements OnInit
         let apiMexc = 'https://www.mexc.com/open/api/v2/market/ticker',
             mexcData = await fetch(apiMexc),
             respJson = await mexcData.json(),
-            moM = respJson.data
+            moM = respJson.data,
+            moExcluir = ['KEYUSDT', 'QIUSDT']
 
         let binApiData = await this.apiBin(),
             moB = binApiData,
@@ -115,7 +120,7 @@ export class MoedasComponent implements OnInit
             }
         }
 
-        this.exlcuirMoeda(moComuns, moRetirar)
+        this.exlcuirMoeda(moComuns, moExcluir)
         this.moBinMexc = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
 
         // for(let i in moComuns)
@@ -402,6 +407,95 @@ export class MoedasComponent implements OnInit
         this.moBinCoinsbit = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
+    async binanceXt()
+    {
+        let exCp = 'XT.com', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'XT.com',
+            moComuns = [],
+            moXt = [],
+            moB = await this.apiBin(),
+            moExcluir = ['GTCBTC', 'GTCUSDT']
+
+        let apiXt = 'https://api.xt.com/data/api/v1/getTickers',
+            xtData = await fetch(apiXt),
+            xtDados = await xtData.json()
+
+        const keys = Object.keys(xtDados)
+        const values: any = Object.values(xtDados)
+
+        for(let i in keys)
+        {
+            if(values[i].bid > 0 && values[i].ask > 0)
+                moXt.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+        }
+
+        for(let i in moXt)
+        {
+            moXt[i].symbol = moXt[i].symbol.replace('_', '')
+            moXt[i].symbol = moXt[i].symbol.toUpperCase()
+        }
+
+        // console.log('Array montado: ', moXt)
+        for(let i in moB)
+        {
+            for(let j in moXt)
+            {
+                if(moB[i].symbol === moXt[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moXt[j].buy, pdVdEx2: moXt[j].sell
+                        })
+            }
+        }
+
+        this.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinXt = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
+    async binanceBittrex()
+    {
+        let exCp = 'Bittrex', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Bittrex',
+            moComuns = [],
+            moEx2 = [],
+            moB = await this.apiBin(),
+            moExcluir = ['PLABTC']
+
+    let apiBittrex = 'https://api.bittrex.com/v3/markets/tickers',
+        btxData = await fetch(apiBittrex),
+        btxDados = await btxData.json()
+
+        moEx2 = btxDados    
+
+    for(let i in moEx2)
+    {
+        moEx2[i].symbol = moEx2[i].symbol.replace('-', '')
+    }
+
+    for(let i in moB)
+    {
+        for(let j in moEx2)
+        {
+            if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                moComuns
+                .push(
+                    { 
+                        symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                        pdCpEx2: moEx2[j].bidRate, pdVdEx2: moEx2[j].askRate
+                    })
+        }
+    }
+
+    this.exlcuirMoeda(moComuns, moExcluir)
+    this.moBinBittrex = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
     async apiBin()
     {
         const bin_url =  'https://api.binance.com/api/v3/ticker/bookTicker'
@@ -411,7 +505,7 @@ export class MoedasComponent implements OnInit
         return arrMoedas
     }
 
-    pdCpVd(mCom = [], exCp = '', exVd = '', exCp2 = '', exVd2 = '')
+    pdCpVd(mCom = [], exCp = '', exVd = '', exCp2 = '', exVd2 = '') //Identifica a pedra de Compra e Venda
     {
         let pdCpEx1 = 0,
             pdVdEx1 = 0,
