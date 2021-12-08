@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core'
+const percent = 3
 
 @Injectable()
 export class Funcoes
@@ -25,7 +26,7 @@ export class Funcoes
             {
                 lucro = (pdCpEx1 - pdVdEx2) / pdVdEx2 * 100
                 maLucro = lucro
-                if(lucro >= 2)
+                if(lucro >= percent)
                 {
                     arrPrintar
                     .push({ symbol: mCom[i].symbol, pdCp: pdCpEx1, pdVd: pdVdEx2, excCp: exCp, excVd: exVd, lucro: lucro })
@@ -36,7 +37,7 @@ export class Funcoes
             {
                 lucro = (pdCpEx2 - pdVdEx1) / pdVdEx1 * 100
 
-                if(lucro >= 2 && lucro > maLucro)
+                if(lucro >= percent && lucro > maLucro)
                 {
                     arrPrintar
                     .push({ symbol: mCom[i].symbol, pdCp: pdCpEx2, pdVd: pdVdEx1, excCp: exCp2, excVd: exVd2, lucro: lucro })

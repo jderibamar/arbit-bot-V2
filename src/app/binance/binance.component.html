@@ -119,6 +119,33 @@
             <td> {{ moeda.pdCp }} </td>
             <td> {{ moeda.lucro }} </td>
         </tr>
+       
+        <tr *ngFor="let moeda of moBinCoindcx">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+       
+        <tr *ngFor="let moeda of moBinNovaDAX">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+       
+        <!-- <tr *ngFor="let moeda of moBinFolgory">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr> -->
         
      </tbody>
 </table>

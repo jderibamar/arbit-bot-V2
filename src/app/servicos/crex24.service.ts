@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Funcoes } from './funcoes.service'
-// const stocksExchange = require('stocks-exchange-client').client
 
+const perc = 3
 @Injectable()
 export class Crex24Service
 {
-    funcS: Funcoes
+    constructor(private funcS: Funcoes){}
 
     async crex24Exmo()
     {
@@ -21,7 +21,7 @@ export class Crex24Service
           moC = [],
           moEx2 = [],
           arrImprimir = [],
-          moExcluir = ['ONEBTC']
+          moExcluir = ['ONEBTC']        
   
           moC = await this.apiCrex()
           // console.log('Dados da Exmo: ', ex2Dados)
@@ -55,12 +55,12 @@ export class Crex24Service
             }
         }
 
-        // console.log('Comuns: ', moComuns)
-      this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns - Crex: ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir )
 
     //   this.moCrexExmo = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
 
-        arrImprimir = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -80,50 +80,5 @@ export class Crex24Service
       }
 
         return arrMoedas
-    }
-
-
-    pdCpVd(mCom = [], exCp = '', exVd = '', exCp2 = '', exVd2 = '') //Identifica a pedra de Compra e Venda
-    {
-        let pdCpEx1 = 0,
-            pdVdEx1 = 0,
-            pdCpEx2 = 0,
-            pdVdEx2 = 0,
-            lucro = 0,
-            arrPrintar = [],
-            maLucro = 0 //para garantir o maior lucro quando houver
-
-        for(let i in mCom)
-        {
-            pdCpEx1 = mCom[i].pdCpEx1
-            pdVdEx1 = mCom[i].pdVdEx1
-            pdCpEx2 = mCom[i].pdCpEx2
-            pdVdEx2 = mCom[i].pdVdEx2
-
-
-            if(pdCpEx1 > pdVdEx2 && pdVdEx2 > 0)
-            {
-                lucro = (pdCpEx1 - pdVdEx2) / pdVdEx2 * 100
-                maLucro = lucro
-                if(lucro >= 2)
-                {
-                    arrPrintar
-                    .push({ symbol: mCom[i].symbol, pdCp: pdCpEx1, pdVd: pdVdEx2, excCp: exCp, excVd: exVd, lucro: lucro })
-                }
-            }
-            
-            if(pdCpEx2 > pdVdEx1 && pdVdEx1 > 0) 
-            {
-                lucro = (pdCpEx2 - pdVdEx1) / pdVdEx1 * 100
-
-                if(lucro >= 2 && lucro > maLucro)
-                {
-                    arrPrintar
-                    .push({ symbol: mCom[i].symbol, pdCp: pdCpEx2, pdVd: pdVdEx1, excCp: exCp2, excVd: exVd2, lucro: lucro })
-                }                    
-            }
-        }
-
-        return arrPrintar
     }
 }

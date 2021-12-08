@@ -7,13 +7,11 @@ import { Funcoes } from './servicos/funcoes.service';
 
 import { AppComponent } from './app.component';
 import { BinanceComponent } from './binance/binance';
-import { Crex24Component } from './crex24/crex24.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BinanceComponent,
-    Crex24Component
+    BinanceComponent
   ],
   imports: [BrowserModule, MDBBootstrapModule, CarouselModule, WavesModule ],
   providers: [Crex24Service, Funcoes],
