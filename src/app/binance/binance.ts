@@ -25,33 +25,38 @@ export class BinanceComponent implements OnInit
     moBinExmo = []
     moBinCoindcx = []
     moBinNovaDAX = []
-    moBinFolgory = []
+    moBinbinChaneglleypro = []
+    moBinbinBankcex = []
+    moBinBiconomy = []
 
-    moCrexBinance: any  //Recebe os dados vindos do compoente Crex24
+    moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
+    moCrexMEXC: any
 
     constructor(private crexS: Crex24Service, private funcS: Funcoes) { }
 
     ngOnInit(): void 
     {
-        setInterval( () => { this.binanceCrex() }, 5000)
-        setInterval( () => { this.binanceMexc() }, 5000)
-        setInterval( () => { this.binanceAscendex() }, 5000)
-        setInterval( () => { this.binanceBitbank() }, 5000)
-        setInterval( () => { this.binanceCoinex() }, 5000)
-        setInterval( () => { this.binanceCrossTower() }, 5000)
+        setInterval( () => { this.binCrex() }, 5000)
+        setInterval( () => { this.binMexc() }, 5000)
+        setInterval( () => { this.binAscendex() }, 5000)
+        setInterval( () => { this.binBitbank() }, 5000)
+        setInterval( () => { this.binCoinex() }, 5000)
+        setInterval( () => { this.binCrossTower() }, 5000)
         // setInterval( () => { this.binanceCoinsbit() }, 5000)
-        setInterval( () => { this.binanceXt() }, 5000)
-        setInterval( () => { this.binanceBittrex() }, 5000)
-        setInterval( () => { this.binanceExmo() }, 5000)
-        setInterval( () => { this.binanceCoinDCX() }, 5000)
-        setInterval( () =>{ this.binanceNovadax() }, 5000 )
-        // setInterval( () =>{ this.binanceFolgory() }, 5000 )
-                
-        // setInterval( () => { this.binanceHitbtc() }, 5000)
+        setInterval( () => { this.binXt() }, 5000)
+        setInterval( () => { this.binBittrex() }, 5000)
+        setInterval( () => { this.binExmo() }, 5000)
+        setInterval( () => { this.binCoinDCX() }, 5000)
+        setInterval( () =>{ this.binNovadax() }, 5000 )
+        setInterval( () =>{ this.binChangelleypro() }, 5000 )
+        // setInterval( () =>{ this.binBankcex() }, 5000 )
+        // setInterval( () =>{ this.binBiconomy() }, 5000 )
+        
+        setInterval( () => { this.outrasExs() }, 5000)
         
     }
 
-    async binanceCrex()
+    async binCrex()
     {
         let api_crex = 'https://api.crex24.com/v2/public/tickers'
         let res_crex = await fetch(api_crex)
@@ -89,17 +94,15 @@ export class BinanceComponent implements OnInit
         this.funcS.exlcuirMoeda(moComuns, moRetirar)
 
         this.moBinCrex = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
-
-        this.moCrexBinance = await this.crexS.crex24Exmo()
     }
        
-    async binanceMexc() //FALTA ATUALIZAR PARA PEDRA
+    async binMexc() //FALTA ATUALIZAR PARA PEDRA
     {
         let apiMexc = 'https://www.mexc.com/open/api/v2/market/ticker',
             mexcData = await fetch(apiMexc),
             respJson = await mexcData.json(),
             moM = respJson.data,
-            moExcluir = ['KEYUSDT', 'QIUSDT']
+            moExcluir = ['KEYUSDT', 'QIUSDT', 'FLUXUSDT']
 
         let binApiData = await this.apiBin(),
             moB = binApiData,
@@ -112,7 +115,7 @@ export class BinanceComponent implements OnInit
 
         for(let i in respJson.data)
         {
-            respJson.data[i].symbol = respJson.data[i].symbol.replace('_', '')
+           respJson.data[i].symbol = respJson.data[i].symbol.replace('_', '')
         }
 
         for(let i in moB)
@@ -133,7 +136,7 @@ export class BinanceComponent implements OnInit
         this.moBinMexc = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceAscendex()
+    async binAscendex()
     {
         let apiAscendex = 'https://ascendex.com/api/pro/v1/spot/ticker'
         let ascData = await fetch(apiAscendex)
@@ -173,7 +176,7 @@ export class BinanceComponent implements OnInit
         this.moBinAscendEX = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceBitbank()
+    async binBitbank()
     {
         let exCp = 'Binance', 
             exVd = 'Bitbank', 
@@ -212,7 +215,7 @@ export class BinanceComponent implements OnInit
         this.moBinBitbank = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceCoinex()
+    async binCoinex()
     {
         let exCp = 'Binance', 
             exVd = 'Coinex', 
@@ -253,7 +256,7 @@ export class BinanceComponent implements OnInit
         this.moBinCoinex = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceCrossTower()
+    async binCrossTower()
     {
         let exCp = 'CrossTower', 
             exVd = 'Binance', 
@@ -295,7 +298,7 @@ export class BinanceComponent implements OnInit
         this.moBinCrosstower = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceCoinsbit()
+    async binCoinsbit()
     {
         let exCp = 'Binance', 
             exVd = 'Coinsbit', 
@@ -339,7 +342,7 @@ export class BinanceComponent implements OnInit
         this.moBinCoinsbit = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceXt()
+    async binXt()
     {
         let exCp = 'XT.com', 
             exVd = 'Binance', 
@@ -388,7 +391,7 @@ export class BinanceComponent implements OnInit
         this.moBinXt = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceBittrex()
+    async binBittrex()
     {
         let exCp = 'Bittrex', 
             exVd = 'Binance', 
@@ -428,56 +431,7 @@ export class BinanceComponent implements OnInit
     this.moBinBittrex = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceHitbtc()
-    {
-        let exCp = 'HitBTC', 
-            exVd = 'Binance', 
-            exCp2 = 'Binance', 
-            exVd2 = 'HitBTC',
-            moComuns = [],
-            moEx2 = [],
-            moExc2Inativas: any = [] ,
-            moB = await this.apiBin(),
-            moExcluir = ['BONDBTC', 'PNTBTC', 'PLABTC', 'PLAUSDT']
-            
-        let api2 = 'https://api.hitbtc.com/api/3/public/ticker',
-            api2Data = await fetch(api2),
-            api2Dados = await api2Data.json()
-
-            const keys = Object.keys(api2Dados)
-            const values: any = Object.values(api2Dados)
-        
-
-        for(let i in keys)
-        {
-            if(values[i].bid > 0 && values[i].ask > 0 )
-                    moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
-        }
-
-
-        for(let i in moB)
-        {
-            for(let j in moEx2)
-            {
-                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
-                    moComuns
-                    .push(
-                        { 
-                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
-                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
-                        })
-            }
-        }
-
-        moExc2Inativas = this.funcS.excluirInativas('https://api.hitbtc.com/api/3/public/currency')
-        
-        this.funcS.exlcuirMoeda(moComuns, moExc2Inativas)
-        this.funcS.exlcuirMoeda(moComuns, moExcluir)
-
-        this.moBinHitbtc = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
-    }
-
-    async binanceExmo()
+    async binExmo()
     {
         let exCp = 'EXMO', 
             exVd = 'Binance', 
@@ -530,7 +484,7 @@ export class BinanceComponent implements OnInit
     this.moBinExmo = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceCoinDCX()
+    async binCoinDCX()
     {
         let exCp = 'CoinDCX', 
             exVd = 'Binance', 
@@ -563,13 +517,14 @@ export class BinanceComponent implements OnInit
             }
         }
 
-        // console.log('Comuns: ', moComuns)
+        
         // this.exlcuirMoeda(moComuns, moExcluir)
         this.moBinCoindcx = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
-        
+        // console.log('Comuns Bin / CoinDCX: ', moComuns)
+        // console.log('Arbit: ', this.moBinCoindcx)
     }
 
-    async binanceNovadax()
+    async binNovadax()
     {
         let exCp = 'NovaDAX', 
             exVd = 'Binance', 
@@ -577,8 +532,7 @@ export class BinanceComponent implements OnInit
             exVd2 = 'NovaDAX',
             moComuns = [],
             moEx2 = [],
-            moB = await this.apiBin(),
-            moExcluir = ['GTCBTC', 'GTCUSDT']
+            moB = await this.apiBin()
 
         let apiEx2 = 'https://api.novadax.com/v1/market/tickers',
             ex2Data = await fetch(apiEx2),
@@ -586,7 +540,6 @@ export class BinanceComponent implements OnInit
 
             moEx2 = ex2Dados.data
 
-        
         for(let i in moEx2)
         {
             moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
@@ -611,27 +564,110 @@ export class BinanceComponent implements OnInit
         this.moBinNovaDAX = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binanceFolgory()
+    async binChangelleypro()
     {
-        let exCp = 'Folgory', 
+        let exCp = 'ChanglleyPRO', 
             exVd = 'Binance', 
             exCp2 = 'Binance', 
-            exVd2 = 'Folgory',
+            exVd2 = 'ChanglleyPRO',
+            moComuns = [],
+            moEx2 = [],
+            moB = await this.apiBin(),
+            moExcluir = ['BONDBTC']
+
+    let apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
+        ex2Data = await fetch(apiEx2),
+        ex2Dados = await ex2Data.json()
+
+        // console.log('Dados da Exmo: ', ex2Dados)
+
+    const keys = Object.keys(ex2Dados)
+    const values: any = Object.values(ex2Dados)
+
+    for(let i in keys)
+    {
+        if(values[i].bid > 0 && values[i].ask > 0)
+            moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+    }
+
+      // console.log('Array montado: ', moEx2)
+
+    for(let i in moB)
+    {
+        for(let j in moEx2)
+        {
+            if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                moComuns
+                .push(
+                    { 
+                        symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                        pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                    })
+        }
+    }
+
+    // console.log('Comuns: ', moComuns)
+    this.funcS.exlcuirMoeda(moComuns, moExcluir)
+    this.moBinbinChaneglleypro = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
+    async binBankcex()
+    {
+        let exCp = 'Bankcex', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Bankcex',
             moComuns = [],
             moEx2 = [],
             moB = await this.apiBin(),
             moExcluir = ['GTCBTC', 'GTCUSDT']
 
-        let apiEx2 = 'https://folgory.com/api/v1',
+        let apiEx2 = 'https://api.bankcex.com/api/v1/ticker/24hr',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json()
 
             moEx2 = ex2Dados
 
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].bidPrice, pdVdEx2: moEx2[j].askPrice
+                        })
+            }
+        }
+        
+        // this.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinbinBankcex = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        // console.log('Comuns Bin / Bankcex: ', moComuns)
+    }
+
+    async binBiconomy()
+    {
+        let exCp = 'Biconomy', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Biconomy',
+            moComuns = [],
+            moEx2 = [],
+        moB = await this.apiBin()
+
+        let apiEx2 = 'https://www.biconomy.com/api/v1/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json()
+
+            moEx2 = ex2Dados.ticker
+
         
         for(let i in moEx2)
         {
-            moEx2[i].symbol = moEx2[i].symbol.replace('/', '')
+            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
         }
 
         for(let i in moB)
@@ -643,14 +679,20 @@ export class BinanceComponent implements OnInit
                     .push(
                         { 
                             symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
-                            pdCpEx2: moEx2[j].best_bid, pdVdEx2: moEx2[j].best_ask
+                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                         })
             }
         }
 
         // console.log('Comuns: ', moComuns)
         // this.exlcuirMoeda(moComuns, moExcluir)
-        this.moBinFolgory = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        this.moBinBiconomy = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
+    outrasExs()
+    {
+        this.moCrexExmo = this.crexS.crex24Exmo()
+        this.moCrexMEXC = this.crexS.crexMEXC()
     }
 
     async apiBin()

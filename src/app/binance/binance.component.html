@@ -111,7 +111,7 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
-        <tr *ngFor="let moeda of moCrexBinance">
+        <tr *ngFor="let moeda of moCrexExmo">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>
@@ -138,14 +138,32 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
        
-        <!-- <tr *ngFor="let moeda of moBinFolgory">
+        <tr *ngFor="let moeda of moBinbinChaneglleypro">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>
             <td> {{ moeda.pdVd }} </td>
             <td> {{ moeda.pdCp }} </td>
             <td> {{ moeda.lucro }} </td>
-        </tr> -->
+        </tr>
+       
+        <tr *ngFor="let moeda of moCrexMEXC">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+       
+        <tr *ngFor="let moeda of moBinBiconomy">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
         
      </tbody>
 </table>
