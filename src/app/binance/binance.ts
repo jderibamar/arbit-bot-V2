@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { Crex24Service } from '../servicos/crex24.service'
 import { Funcoes } from '../servicos/funcoes.service'
 
-const moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUSDT', 'SUPERBTC', 'EPSBTC', 'OMGBTC', 'QIUSDT']  //Lista de moedas falsa-positva 
+const temp = 3000
 
 @Component({
   selector: 'app-binance',
@@ -28,6 +28,7 @@ export class BinanceComponent implements OnInit
     moBinbinChaneglleypro = []
     moBinbinBankcex = []
     moBinBiconomy = []
+    moBinDecoin = []
 
     moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
     moCrexMEXC: any
@@ -36,33 +37,36 @@ export class BinanceComponent implements OnInit
 
     ngOnInit(): void 
     {
-        setInterval( () => { this.binCrex() }, 5000)
-        setInterval( () => { this.binMexc() }, 5000)
-        setInterval( () => { this.binAscendex() }, 5000)
-        setInterval( () => { this.binBitbank() }, 5000)
-        setInterval( () => { this.binCoinex() }, 5000)
-        setInterval( () => { this.binCrossTower() }, 5000)
-        // setInterval( () => { this.binanceCoinsbit() }, 5000)
-        setInterval( () => { this.binXt() }, 5000)
-        setInterval( () => { this.binBittrex() }, 5000)
-        setInterval( () => { this.binExmo() }, 5000)
-        setInterval( () => { this.binCoinDCX() }, 5000)
-        setInterval( () =>{ this.binNovadax() }, 5000 )
-        setInterval( () =>{ this.binChangelleypro() }, 5000 )
-        // setInterval( () =>{ this.binBankcex() }, 5000 )
-        // setInterval( () =>{ this.binBiconomy() }, 5000 )
+        setInterval( () => { this.binCrex() }, temp)
+        setInterval( () => { this.binMexc() }, temp)
+        setInterval( () => { this.binAscendex() }, temp)
+        setInterval( () => { this.binBitbank() }, temp)
+        setInterval( () => { this.binCoinex() }, temp)
+        setInterval( () => { this.binCrossTower() }, temp)
+        // setInterval( () => { this.binanceCoinsbit() }, temp)
+        setInterval( () => { this.binXt() }, temp)
+        setInterval( () => { this.binBittrex() }, temp)
+        setInterval( () => { this.binExmo() }, temp)
+        setInterval( () => { this.binCoinDCX() }, temp)
+        setInterval( () =>{ this.binNovadax() }, temp )
+        setInterval( () =>{ this.binChangelleypro() }, temp )
+        setInterval( () =>{ this.binBankcex() }, temp )
+        setInterval( () =>{ this.binBiconomy() }, temp )
+        setInterval( () =>{ this.binDecoin() }, temp )
         
-        setInterval( () => { this.outrasExs() }, 5000)
+
+        setInterval( () => { this.outrasExs() }, temp)
         
     }
 
     async binCrex()
     {
-        let api_crex = 'https://api.crex24.com/v2/public/tickers'
-        let res_crex = await fetch(api_crex)
-        let crex_dados = await res_crex.json()
-        let moC = [] //array de moedas da Crex
-        let moComuns = []
+        let api_crex = 'https://api.crex24.com/v2/public/tickers',
+            res_crex = await fetch(api_crex),
+            crex_dados = await res_crex.json(),
+            moC = [], //array de moedas da Crex
+            moComuns = [],
+            moRetirar = ['ONEBTC', 'ACMBTC', 'CHESSBTC', 'CHESSUSDT', 'GTCBTC', 'GTCUSDT', 'SUPERBTC', 'EPSBTC', 'OMGBTC', 'QIUSDT']  //Lista de moedas falsa-positva 
         
         let exCp = 'Crex24', 
             exVd = 'Binance', 
@@ -217,10 +221,10 @@ export class BinanceComponent implements OnInit
 
     async binCoinex()
     {
-        let exCp = 'Binance', 
-            exVd = 'Coinex', 
-            exCp2 = 'Coinex', 
-            exVd2 = 'Binance',
+        let exCp = 'Coinex', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Coinex',
             moComuns = [],
             moCn = []
 
@@ -688,6 +692,45 @@ export class BinanceComponent implements OnInit
         // this.exlcuirMoeda(moComuns, moExcluir)
         this.moBinBiconomy = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
+
+    async binDecoin()
+    {
+        let exCp = 'Decoin', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Decoin',
+            moComuns = [],
+            moB = await this.apiBin()
+
+        let apiEx2 = 'https://apiv1.decoin.io/market/get-ticker',
+            ex2Data = await fetch(apiEx2),
+            moEx2 = await ex2Data.json()
+
+                    
+        for(let i in moEx2)
+        {
+            moEx2[i].Name = moEx2[i].Name.replace('/', '')
+        }
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].Name && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].BidPrice, pdVdEx2: moEx2[j].AskPrice
+                        })
+            }
+        }
+
+        // console.log('Comuns entre Bin / Decoin: ', moComuns)
+        // this.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinDecoin = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
 
     outrasExs()
     {

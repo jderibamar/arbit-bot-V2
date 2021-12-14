@@ -4,8 +4,8 @@
             <th> Moeda </th>
             <th> Onde Comprar </th>
             <th> Onde Vender </th>
-            <th> Preço de Custo </th>
-            <th> Preço de Venda </th>
+            <th> Compar Por </th>
+            <th> Vender Por </th>
             <th> LUCRO % </th>
             
         </tr>
@@ -93,15 +93,6 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
-        <tr *ngFor="let moeda of moBinHitbtc">
-            <td> {{ moeda.symbol }} </td>
-            <td> {{ moeda.excCp }} </td>
-            <td> {{ moeda.excVd }} </td>
-            <td> {{ moeda.pdVd }} </td>
-            <td> {{ moeda.pdCp }} </td>
-            <td> {{ moeda.lucro }} </td>
-        </tr>
-
         <tr *ngFor="let moeda of moBinExmo">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
@@ -157,6 +148,25 @@
         </tr>
        
         <tr *ngFor="let moeda of moBinBiconomy">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
+        <tr *ngFor="let moeda of moBinbinBankcex">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+        
+
+        <tr *ngFor="let moeda of moBinDecoin">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>
