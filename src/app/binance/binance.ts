@@ -39,7 +39,7 @@ export class BinanceComponent implements OnInit
     ngOnInit(): void 
     {
         //atualizar a página cada 10 segundos
-        setInterval( () => { location.reload() }, 10000)
+        setInterval( () => { location.reload() }, 60000)
 
         setInterval( () => { this.binCrex() }, temp)
         setInterval( () => { this.binMexc() }, temp)
