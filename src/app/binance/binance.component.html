@@ -164,9 +164,17 @@
             <td> {{ moeda.pdCp }} </td>
             <td> {{ moeda.lucro }} </td>
         </tr>
-        
 
         <tr *ngFor="let moeda of moBinDecoin">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
+        <tr *ngFor="let moeda of moBinToktok">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>

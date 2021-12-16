@@ -29,6 +29,7 @@ export class BinanceComponent implements OnInit
     moBinbinBankcex = []
     moBinBiconomy = []
     moBinDecoin = []
+    moBinToktok = []
 
     moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
     moCrexMEXC: any
@@ -37,6 +38,9 @@ export class BinanceComponent implements OnInit
 
     ngOnInit(): void 
     {
+        //atualizar a página cada 10 segundos
+        setInterval( () => { location.reload() }, 10000)
+
         setInterval( () => { this.binCrex() }, temp)
         setInterval( () => { this.binMexc() }, temp)
         setInterval( () => { this.binAscendex() }, temp)
@@ -53,7 +57,7 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binBankcex() }, temp )
         setInterval( () =>{ this.binBiconomy() }, temp )
         setInterval( () =>{ this.binDecoin() }, temp )
-        
+        setInterval( () =>{ this.binToktok() }, temp )
 
         setInterval( () => { this.outrasExs() }, temp)
         
@@ -660,7 +664,7 @@ export class BinanceComponent implements OnInit
             exVd2 = 'Biconomy',
             moComuns = [],
             moEx2 = [],
-        moB = await this.apiBin()
+            moB = await this.apiBin()
 
         let apiEx2 = 'https://www.biconomy.com/api/v1/tickers',
             ex2Data = await fetch(apiEx2),
@@ -726,9 +730,50 @@ export class BinanceComponent implements OnInit
             }
         }
 
-        // console.log('Comuns entre Bin / Decoin: ', moComuns)
         // this.exlcuirMoeda(moComuns, moExcluir)
         this.moBinDecoin = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
+    async binToktok()
+    {
+        let exCp = 'Toktok',
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'Toktok',
+            moEx2 = [],
+            moComuns = [],
+            moB = await this.apiBin()
+
+        let apiEx2 = 'https://www.tokok.com/api/v1/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json()
+
+            moEx2 = ex2Dados.ticker
+
+        for(let i in moEx2)
+        {
+            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
+        }
+
+        // console.log('Dados da TOKTOK: ', moEx2)
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                        })
+            }
+        }
+
+        // console.log('Comuns entre Bin / TOKTOK: ', moComuns)
+        // this.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinToktok = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
 
