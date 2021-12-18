@@ -30,6 +30,7 @@ export class BinanceComponent implements OnInit
     moBinBiconomy = []
     moBinDecoin = []
     moBinToktok = []
+    moBinP2pb2b = []
 
     moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
     moCrexMEXC: any
@@ -47,7 +48,6 @@ export class BinanceComponent implements OnInit
         setInterval( () => { this.binBitbank() }, temp)
         setInterval( () => { this.binCoinex() }, temp)
         setInterval( () => { this.binCrossTower() }, temp)
-        // setInterval( () => { this.binanceCoinsbit() }, temp)
         setInterval( () => { this.binXt() }, temp)
         setInterval( () => { this.binBittrex() }, temp)
         setInterval( () => { this.binExmo() }, temp)
@@ -58,6 +58,8 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binBiconomy() }, temp )
         setInterval( () =>{ this.binDecoin() }, temp )
         setInterval( () =>{ this.binToktok() }, temp )
+        setInterval( () =>{ this.binP2pb2b() }, temp )
+
 
         setInterval( () => { this.outrasExs() }, temp)
         
@@ -583,40 +585,40 @@ export class BinanceComponent implements OnInit
             moB = await this.apiBin(),
             moExcluir = ['BONDBTC']
 
-    let apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
-        ex2Data = await fetch(apiEx2),
-        ex2Dados = await ex2Data.json()
+        let apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json()
 
-        // console.log('Dados da Exmo: ', ex2Dados)
+            // console.log('Dados da Exmo: ', ex2Dados)
 
-    const keys = Object.keys(ex2Dados)
-    const values: any = Object.values(ex2Dados)
+        const keys = Object.keys(ex2Dados)
+        const values: any = Object.values(ex2Dados)
 
-    for(let i in keys)
-    {
-        if(values[i].bid > 0 && values[i].ask > 0)
-            moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
-    }
-
-      // console.log('Array montado: ', moEx2)
-
-    for(let i in moB)
-    {
-        for(let j in moEx2)
+        for(let i in keys)
         {
-            if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
-                moComuns
-                .push(
-                    { 
-                        symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
-                        pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
-                    })
+            if(values[i].bid > 0 && values[i].ask > 0)
+                moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
         }
-    }
 
-    // console.log('Comuns: ', moComuns)
-    this.funcS.exlcuirMoeda(moComuns, moExcluir)
-    this.moBinbinChaneglleypro = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        // console.log('Array montado: ', moEx2)
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                        })
+            }
+        }
+
+        // console.log('Comuns: ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinbinChaneglleypro = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
     async binBankcex()
@@ -776,6 +778,57 @@ export class BinanceComponent implements OnInit
         this.moBinToktok = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
+    async binP2pb2b()
+    {
+        let exCp = 'ChanglleyPRO', 
+        exVd = 'Binance', 
+        exCp2 = 'Binance', 
+        exVd2 = 'ChanglleyPRO',
+        moComuns = [],
+        moEx2 = [],
+        moB = await this.apiBin(),
+        moExcluir = ['BONDBTC']
+
+        let apiEx2 = 'http://api.p2pb2b.io/api/v2/public/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json()
+
+            // console.log('Dados da P2PB2B: ', ex2Dados.result)
+
+        const keys = Object.keys(ex2Dados.result)
+        const values: any = Object.values(ex2Dados.result)
+
+        for(let i in keys)
+        {
+            // if(values[i].bid > 0 && values[i].ask > 0)
+                moEx2.push({ symbol: keys[i], buy: values[i].ticker.bid, sell: values[i].ticker.ask })
+        }
+
+        for(let i in moEx2)
+        {
+            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
+        }
+
+        // console.log('Array montado: ', moEx2)
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                        })
+            }
+        }
+
+        // console.log('Comuns: ', moComuns)
+        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinP2pb2b = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
 
     outrasExs()
     {
