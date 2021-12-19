@@ -31,6 +31,7 @@ export class BinanceComponent implements OnInit
     moBinDecoin = []
     moBinToktok = []
     moBinP2pb2b = []
+    moBinCoinField = []
 
     moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
     moCrexMEXC: any
@@ -40,7 +41,7 @@ export class BinanceComponent implements OnInit
     ngOnInit(): void 
     {
         //atualizar a página cada 1 minuto
-        setInterval( () => { location.reload() }, 100000)
+        setInterval( () => { location.reload() }, 300000)
 
         setInterval( () => { this.binCrex() }, temp)
         setInterval( () => { this.binMexc() }, temp)
@@ -60,6 +61,7 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binToktok() }, temp )
         setInterval( () =>{ this.binP2pb2b() }, temp )
 
+        this.binCoinField()
 
         setInterval( () => { this.outrasExs() }, temp)
         
@@ -780,10 +782,10 @@ export class BinanceComponent implements OnInit
 
     async binP2pb2b()
     {
-        let exCp = 'ChanglleyPRO', 
+        let exCp = 'P2PB2B', 
         exVd = 'Binance', 
         exCp2 = 'Binance', 
-        exVd2 = 'ChanglleyPRO',
+        exVd2 = 'P2PB2B',
         moComuns = [],
         moEx2 = [],
         moB = await this.apiBin(),
@@ -828,6 +830,50 @@ export class BinanceComponent implements OnInit
         // console.log('Comuns: ', moComuns)
         // this.funcS.exlcuirMoeda(moComuns, moExcluir)
         this.moBinP2pb2b = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    }
+
+    async binCoinField()
+    {
+        let exCp = 'CoinField', 
+        exVd = 'Binance', 
+        exCp2 = 'Binance', 
+        exVd2 = 'CoinField',
+        moComuns = [],
+        moEx2 = [],
+        moB = await this.apiBin(),
+        moExcluir = ['BONDBTC']
+
+        let apiEx2 = 'https://api.coinfield.com/v1/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json()
+
+            moEx2 = ex2Dados.markets
+
+        for(let i in moEx2)
+        {
+            moEx2[i].market_id = moEx2[i].market_id.toUpperCase()
+        }
+
+        // console.log('Dados da CoinField: ', moEx2)
+        // console.log('Array montado: ', moEx2)
+
+        for(let i in moB)
+        {
+            for(let j in moEx2)
+            {
+                if(moB[i].symbol === moEx2[j].market_id && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                    moComuns
+                    .push(
+                        { 
+                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                            pdCpEx2: moEx2[j].bid, pdVdEx2: moEx2[j].ask
+                        })
+            }
+        }
+
+        // console.log('Comuns entre Bin / CoinField: ', moComuns)
+        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinCoinField = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
     outrasExs()
