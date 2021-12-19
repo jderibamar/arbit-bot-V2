@@ -80,7 +80,7 @@ export class Crex24Service
           moC = [],
           moEx2 = [],
           arrImprimir = [],
-          moExcluir = ['ONEBTC']        
+          moExcluir = ['CHESSUSDT', 'CROUSDT', 'DONUSDT', 'FREEUSDT', 'GTCUSDT', 'REVUSDT', 'YFXUSDT']        
   
           moC = await this.apiCrex()
           moEx2 = ex2Dados.data
@@ -106,7 +106,7 @@ export class Crex24Service
         }
 
         // console.log('Comuns - Crex / MEXC : ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir )
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
 
     //   this.moCrexExmo = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
 
@@ -160,6 +160,55 @@ export class Crex24Service
 
         // console.log('Comuns entre Crex / Coinex : ', moComuns)
         // this.funcS.exlcuirMoeda(moComuns, moExcluir )
+
+        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Imprimir: ', arrImprimir)
+        return arrImprimir
+    }
+
+    async crexBittrex()
+    {
+        let moComuns = [],
+            exCp = 'Bittrex', 
+            exVd = 'Crex24', 
+            exCp2 = 'Crex24', 
+            exVd2 = 'Bittrex',
+
+            apiEx2 = 'https://api.bittrex.com/v3/markets/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moC = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
+            
+            moEx2 = ex2Dados
+    
+            for(let i in moEx2)
+            {
+                moEx2[i].symbol = moEx2[i].symbol.replace('-', '')
+            }
+
+            moC = await this.apiCrex()
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moC)
+            {
+                for(let j in moEx2)
+                {
+                    if(moC[i].instrument === moEx2[j].symbol)
+                        moComuns
+                        .push(
+                            { 
+                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                pdCpEx2: moEx2[j].bidRate, pdVdEx2: moEx2[j].askRate
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Crex / Bittrex : ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
 

@@ -36,6 +36,7 @@ export class BinanceComponent implements OnInit
     moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
     moCrexMEXC: any
     moCrexCoinex: any
+    moCrexBittrex: any
 
     constructor(private crexS: Crex24Service, private funcS: Funcoes) { }
 
@@ -877,13 +878,14 @@ export class BinanceComponent implements OnInit
         this.moBinCoinField = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    outrasExs()
+    async outrasExs()
     {
-        this.moCrexExmo = this.crexS.crex24Exmo()
-        this.moCrexMEXC = this.crexS.crexMEXC()
-        this.moCrexCoinex = this.crexS.crexCoinex()
+        this.moCrexExmo = await this.crexS.crex24Exmo()
+        this.moCrexMEXC = await this.crexS.crexMEXC()
+        this.moCrexCoinex =  await this.crexS.crexCoinex()
+        this.moCrexBittrex = await this.crexS.crexBittrex()
 
-        // console.log('Retorno Arbit Crex / Coinex: ', this.moCrexCoinex)
+        // console.log('Retorno Arbit Crex / Bittrex: ', this.moCrexBittrex)
     }
 
     async apiBin()
