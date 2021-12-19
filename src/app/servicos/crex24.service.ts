@@ -116,6 +116,57 @@ export class Crex24Service
         return arrImprimir
     }
 
+    async crexCoinex()
+    {
+        let moComuns = [],
+            exCp = 'Coinex', 
+            exVd = 'Crex24', 
+            exCp2 = 'Crex24', 
+            exVd2 = 'Coinex',
+
+            apiEx2 = 'https://api.coinex.com/perpetual/v1/market/ticker/all',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moC = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['ONEBTC']        
+    
+            const keys = Object.keys(ex2Dados.data.ticker)
+            const values: any = Object.values(ex2Dados.data.ticker)
+        
+                for(let i in keys)
+                {
+                    if(values[i].buy > 0 && values[i].sell > 0)
+                        moEx2.push({ symbol: keys[i], buy: values[i].buy, sell: values[i].sell })
+                } 
+
+            moC = await this.apiCrex()
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moC)
+            {
+                for(let j in moEx2)
+                {
+                    if(moC[i].instrument === moEx2[j].symbol)
+                        moComuns
+                        .push(
+                            { 
+                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Crex / Coinex : ', moComuns)
+        // this.funcS.exlcuirMoeda(moComuns, moExcluir )
+
+        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Imprimir: ', arrImprimir)
+        return arrImprimir
+    }
+
     async apiCrex()
     {
       let api_crex = 'https://api.crex24.com/v2/public/tickers',
