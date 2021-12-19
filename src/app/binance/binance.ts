@@ -413,7 +413,7 @@ export class BinanceComponent implements OnInit
             moComuns = [],
             moEx2 = [],
             moB = await this.apiBin(),
-            moExcluir = ['PLABTC']
+            moExcluir = ['PLABTC', 'IOTXBTC', 'IOTXUSDT']
 
     let apiBittrex = 'https://api.bittrex.com/v3/markets/tickers',
         btxData = await fetch(apiBittrex),
