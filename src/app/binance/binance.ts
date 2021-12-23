@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Crex24Service } from '../servicos/crex24.service'
 import { Funcoes } from '../servicos/funcoes.service'
+import { BittrexService } from '../servicos/bittrex.service'
 
 const temp = 3000
 
@@ -33,7 +34,8 @@ export class BinanceComponent implements OnInit
     moBinP2pb2b = []
     moBinCoinField = []
 
-    moCrexExmo: any  //Recebe os dados vindos do compoente Crex24
+    //variáveis para os dados de outras Excs base
+    moCrexExmo: any  
     moCrexMEXC: any
     moCrexCoinex: any
     moCrexBittrex: any
@@ -41,8 +43,10 @@ export class BinanceComponent implements OnInit
     moCrexXT: any
     moCrexChangellyPro: any
     moCrexAscendex: any
+    moBittrexExmo: any
+    moBittrexMexc: any
 
-    constructor(private crexS: Crex24Service, private funcS: Funcoes) { }
+    constructor(private crexS: Crex24Service, private funcS: Funcoes, private bittrexS: BittrexService) { }
 
     ngOnInit(): void 
     {
@@ -883,19 +887,6 @@ export class BinanceComponent implements OnInit
         this.moBinCoinField = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async outrasExs()
-    {
-        this.moCrexExmo = await this.crexS.Exmo()
-        this.moCrexMEXC = await this.crexS.MEXC()
-        this.moCrexCoinex =  await this.crexS.Coinex()
-        this.moCrexBittrex = await this.crexS.Bittrex()
-        this.moCrexBiconomy = await this.crexS.Biconomy()
-        this.moCrexXT = await this.crexS.XT()
-        this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
-
-        this.moCrexAscendex = await this.crexS.Ascendex()
-    }
-
     async apiBin()
     {
         const bin_url =  'https://api.binance.com/api/v3/ticker/bookTicker'
@@ -903,5 +894,20 @@ export class BinanceComponent implements OnInit
         let arrMoedas = [] = await response.json()
          
         return arrMoedas
+    }
+
+    async outrasExs()
+    {
+        this.moCrexExmo = await this.crexS.Exmo()
+        this.moCrexMEXC = await this.crexS.MEXC()
+        this.moCrexCoinex =  await this.crexS.Coinex()
+        this.moCrexBittrex = await this.crexS.Bittrex()
+        this.moCrexBiconomy = await this.crexS.Biconomy()
+        // this.moCrexXT = await this.crexS.XT()
+        this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
+        this.moCrexAscendex = await this.crexS.Ascendex()
+        this.moBittrexExmo = await this.bittrexS.Exmo()
+
+        this.moBittrexMexc = await this.bittrexS.MEXC()
     }
 }

@@ -3,27 +3,27 @@ import { Funcoes } from './funcoes.service'
 
 const perc = 3
 @Injectable()
-export class Crex24Service
+export class BittrexService
 {
     constructor(private funcS: Funcoes){}
 
     async Exmo()
     {
-      let moComuns = [],
+      let Comuns = [],
           exCp = 'EXMO', 
-          exVd = 'Crex24', 
-          exCp2 = 'Crex24', 
+          exVd = 'Bittrex', 
+          exCp2 = 'Bittrex', 
           exVd2 = 'EXMO',
 
           apiEx2 = 'https://api.exmo.com/v1.1/ticker',
           ex2Data = await fetch(apiEx2),
           ex2Dados = await ex2Data.json(),
-          moC = [],
+          moBtx = [],
           moEx2 = [],
           arrImprimir = [],
-          moExcluir = ['ONEBTC']        
+          moExcluir = ['CRONBTC', 'CRONUSDT']
   
-          moC = await this.apiCrex()
+          moBtx = await this.apiBittrex()
           // console.log('Dados da Exmo: ', ex2Dados)
   
       const keys = Object.keys(ex2Dados)
@@ -41,26 +41,24 @@ export class Crex24Service
           moEx2[i].symbol = moEx2[i].symbol.toUpperCase()
       }
 
-      for(let i in moC)
+      for(let i in moBtx)
         {
             for(let j in moEx2)
             {
-                if(moC[i].instrument === moEx2[j].symbol)
-                    moComuns
+                if(moBtx[i].symbol === moEx2[j].symbol)
+                    Comuns
                     .push(
                         { 
-                            symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                            symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRateRate, pdVdEx1: moBtx[i].askRateRate,
                             pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                         })
             }
         }
 
-        // console.log('Comuns - Crex: ', moComuns)
-        this.funcS.exlcuirMoeda(moComuns, moExcluir )
+        // console.log('Comuns entre Bittrex e Exmo: ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-    //   this.moCrexExmo = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
-
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -68,21 +66,21 @@ export class Crex24Service
 
     async MEXC()
     {
-      let moComuns = [],
+      let Comuns = [],
           exCp = 'MEXC', 
-          exVd = 'Crex24', 
-          exCp2 = 'Crex24', 
+          exVd = 'Bittrex', 
+          exCp2 = 'Bittrex', 
           exVd2 = 'MEXC',
 
           apiEx2 = 'https://www.mexc.com/open/api/v2/market/ticker',
           ex2Data = await fetch(apiEx2),
           ex2Dados = await ex2Data.json(),
-          moC = [],
+          moBtx = [],
           moEx2 = [],
           arrImprimir = [],
-          moExcluir = ['CHESSUSDT', 'CROUSDT', 'DONUSDT', 'FREEUSDT', 'GTCUSDT', 'REVUSDT', 'YFXUSDT']        
+          moExcluir = ['DFIUSDT', 'DFIUSDT', 'FLUXUSDT', 'GOLDUSDT', 'GOLDUSDT', 'IOTXUSDT', 'DNAUSDT', 'PINKUSDT', 'PRTUSDT', 'REVUSDT', 'PROSUSDT', 'DTXUSDT']
   
-          moC = await this.apiCrex()
+          moBtx = await this.apiBittrex()
           moEx2 = ex2Dados.data
           // console.log('Dados da Exmo: ', ex2Dados)
   
@@ -91,26 +89,26 @@ export class Crex24Service
            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
         }
 
-      for(let i in moC)
+      for(let i in moBtx)
         {
             for(let j in moEx2)
             {
-                if(moC[i].instrument === moEx2[j].symbol)
-                    moComuns
+                if(moBtx[i].symbol === moEx2[j].symbol)
+                    Comuns
                     .push(
                         { 
-                            symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                            symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                             pdCpEx2: moEx2[j].bid, pdVdEx2: moEx2[j].ask
                         })
             }
         }
 
-        // console.log('Comuns - Crex / MEXC : ', moComuns)
-        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns - Bittrex / MEXC : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-    //   this.moCrexExmo = this.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+    //   this.moBtxrexExmo = this.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -118,16 +116,16 @@ export class Crex24Service
 
     async Coinex()
     {
-        let moComuns = [],
+        let Comuns = [],
             exCp = 'Coinex', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
             exVd2 = 'Coinex',
 
             apiEx2 = 'https://api.coinex.com/perpetual/v1/market/ticker/all',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moC = [],
+            moBtx = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['ONEBTC']        
@@ -141,76 +139,27 @@ export class Crex24Service
                         moEx2.push({ symbol: keys[i], buy: values[i].buy, sell: values[i].sell })
                 } 
 
-            moC = await this.apiCrex()
+            moBtx = await this.apiBittrex()
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moC)
+        for(let i in moBtx)
             {
                 for(let j in moEx2)
                 {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
                         .push(
                             { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Crex / Coinex : ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir )
+        // console.log('Comuns entre Crex / Coinex : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir )
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
-
-        // console.log('Imprimir: ', arrImprimir)
-        return arrImprimir
-    }
-
-    async Bittrex()
-    {
-        let moComuns = [],
-            exCp = 'Bittrex', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
-            exVd2 = 'Bittrex',
-
-            apiEx2 = 'https://api.bittrex.com/v3/markets/tickers',
-            ex2Data = await fetch(apiEx2),
-            ex2Dados = await ex2Data.json(),
-            moC = [],
-            moEx2 = [],
-            arrImprimir = [],
-            moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
-            
-            moEx2 = ex2Dados
-    
-            for(let i in moEx2)
-            {
-                moEx2[i].symbol = moEx2[i].symbol.replace('-', '')
-            }
-
-            moC = await this.apiCrex()
-            // console.log('Dados da Exmo: ', ex2Dados)
-
-        for(let i in moC)
-            {
-                for(let j in moEx2)
-                {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
-                        .push(
-                            { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
-                                pdCpEx2: moEx2[j].bidRate, pdVdEx2: moEx2[j].askRate
-                            })
-                }
-            }
-
-        // console.log('Comuns entre Crex / Bittrex : ', moComuns)
-        this.funcS.exlcuirMoeda(moComuns, moExcluir)
-
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -218,22 +167,22 @@ export class Crex24Service
 
     async Biconomy()
     {
-        let moComuns = [],
+        let Comuns = [],
             exCp = 'Biconomy', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
             exVd2 = 'Biconomy',
 
             apiEx2 = 'https://www.biconomy.com/api/v1/tickers',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moC = [],
+            moBtx = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
             
             moEx2 = ex2Dados.ticker
-            moC = await this.apiCrex()
+            moBtx = await this.apiBittrex()
 
         
         for(let i in moEx2)
@@ -242,24 +191,24 @@ export class Crex24Service
         }
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moC)
+        for(let i in moBtx)
             {
                 for(let j in moEx2)
                 {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
                         .push(
                             { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Crex / Bittrex : ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns entre Crex / Bittrex : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -267,21 +216,21 @@ export class Crex24Service
 
     async XT()
     {
-        let moComuns = [],
+        let Comuns = [],
             exCp = 'XT', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
             exVd2 = 'XT',
 
             apiEx2 = 'https://api.xt.com/data/api/v1/getTickers',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moC = [],
+            moBtx = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
             
-            moC = await this.apiCrex()
+            moBtx = await this.apiBittrex()
 
             const keys = Object.keys(ex2Dados)
             const values: any = Object.values(ex2Dados)
@@ -300,24 +249,24 @@ export class Crex24Service
 
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moC)
+        for(let i in moBtx)
             {
                 for(let j in moEx2)
                 {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
                         .push(
                             { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Crex / XT : ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns entre Crex / XT : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
@@ -325,21 +274,21 @@ export class Crex24Service
 
     async ChangelleyPRO()
     {
-        let moComuns = [],
+        let Comuns = [],
             exCp = 'ChanglleyPRO', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
             exVd2 = 'ChanglleyPRO',
 
             apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moC = [],
+            moBtx = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
             
-            moC = await this.apiCrex()
+            moBtx = await this.apiBittrex()
 
             const keys = Object.keys(ex2Dados)
             const values: any = Object.values(ex2Dados)
@@ -352,41 +301,41 @@ export class Crex24Service
     
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moC)
+        for(let i in moBtx)
             {
                 for(let j in moEx2)
                 {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
                         .push(
                             { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Crex / ChanglleyPRO : ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns entre Crex / ChanglleyPRO : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
     async Ascendex()
     {
-        let moComuns = [],
+        let Comuns = [],
             exCp = 'Ascendex', 
-            exVd = 'Crex24', 
-            exCp2 = 'Crex24', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
             exVd2 = 'Ascendex',
 
             apiEx2 = 'https://ascendex.com/api/pro/v1/spot/ticker',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moC = [],
+            moBtx = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['ONEBTC', 'CROUSDT', 'SOVBTC']
@@ -396,46 +345,46 @@ export class Crex24Service
                 ex2Dados.data[i].symbol = ex2Dados.data[i].symbol.replace('/', '')
             }
 
-            moC = await this.apiCrex()
+            moBtx = await this.apiBittrex()
             moEx2 = ex2Dados.data
     
     
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moC)
+        for(let i in moBtx)
             {
                 for(let j in moEx2)
                 {
-                    if(moC[i].instrument === moEx2[j].symbol)
-                        moComuns
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
                         .push(
                             { 
-                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
                                 pdCpEx2: moEx2[j].bid[0], pdVdEx2: moEx2[j].ask[0]
                             })
                 }
             }
 
-        // console.log('Comuns entre Crex / Ascendex : ', moComuns)
-        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        // console.log('Comuns entre Crex / Ascendex : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
-        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
-    async apiCrex()
+    async apiBittrex()
     {
-      let api_crex = 'https://api.crex24.com/v2/public/tickers',
-          res_crex = await fetch(api_crex),
-          crex_dados = [] = await res_crex.json(),
+      let api_btx = 'https://api.bittrex.com/v3/markets/tickers',
+          res_btx = await fetch(api_btx),
+          btx_dados = [] = await res_btx.json(),
           arrMoedas = [] //array de moedas da Crex
       
-      for(let i in crex_dados)
+      for(let i in btx_dados)
       {
-          crex_dados[i].instrument = crex_dados[i].instrument.replace('-', '')
-          arrMoedas = crex_dados
+        btx_dados[i].symbol = btx_dados[i].symbol.replace('-', '')
+          arrMoedas = btx_dados
       }
 
         return arrMoedas
