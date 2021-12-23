@@ -39,6 +39,7 @@ export class BinanceComponent implements OnInit
     moCrexBittrex: any
     moCrexBiconomy: any
     moCrexXT: any
+    moCrexChangellyPro: any
 
     constructor(private crexS: Crex24Service, private funcS: Funcoes) { }
 
@@ -56,7 +57,7 @@ export class BinanceComponent implements OnInit
         setInterval( () => { this.binXt() }, temp)
         setInterval( () => { this.binBittrex() }, temp)
         setInterval( () => { this.binExmo() }, temp)
-        setInterval( () => { this.binCoinDCX() }, temp)
+        // setInterval( () => { this.binCoinDCX() }, temp)
         setInterval( () =>{ this.binNovadax() }, temp )
         setInterval( () =>{ this.binChangelleypro() }, temp )
         setInterval( () =>{ this.binBankcex() }, temp )
@@ -65,9 +66,9 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binToktok() }, temp )
         setInterval( () =>{ this.binP2pb2b() }, temp )
         setInterval( () =>{ this.binCoinField() }, temp )
+        // setInterval( () =>{ this.binWbfex() }, temp )
 
-        this.binWbfex()        
-
+        
         setInterval( () => { this.outrasExs() }, temp)
         
     }
@@ -934,7 +935,7 @@ export class BinanceComponent implements OnInit
         this.moCrexBiconomy = await this.crexS.Biconomy()
         this.moCrexXT = await this.crexS.XT()
 
-        // console.log('Retorno Arbit Crex / Bittrex: ', this.moCrexBittrex)
+        this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
     }
 
     async apiBin()
