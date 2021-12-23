@@ -323,7 +323,7 @@ export class Crex24Service
         return arrImprimir
     }
 
-    async ChanglleyPRO()
+    async ChangelleyPRO()
     {
         let moComuns = [],
             exCp = 'ChanglleyPRO', 
@@ -372,6 +372,56 @@ export class Crex24Service
         arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
 
         console.log('Imprimir: ', arrImprimir)
+        return arrImprimir
+    }
+
+    async Ascendex()
+    {
+        let moComuns = [],
+            exCp = 'Ascendex', 
+            exVd = 'Crex24', 
+            exCp2 = 'Crex24', 
+            exVd2 = 'Ascendex',
+
+            apiEx2 = 'https://ascendex.com/api/pro/v1/spot/ticker',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moC = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['ONEBTC', 'CROUSDT', 'ONEBTC']
+            
+            for(let i in ex2Dados.data)
+            {
+                ex2Dados.data[i].symbol = ex2Dados.data[i].symbol.replace('/', '')
+            }
+
+            moC = await this.apiCrex()
+            moEx2 = ex2Dados.data
+    
+    
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moC)
+            {
+                for(let j in moEx2)
+                {
+                    if(moC[i].instrument === moEx2[j].symbol)
+                        moComuns
+                        .push(
+                            { 
+                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                pdCpEx2: moEx2[j].bid[0], pdVdEx2: moEx2[j].ask[0]
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Crex / Ascendex : ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+
+        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
