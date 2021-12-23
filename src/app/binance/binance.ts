@@ -45,6 +45,7 @@ export class BinanceComponent implements OnInit
     moCrexAscendex: any
     moBittrexExmo: any
     moBittrexMexc: any
+    moBittrexXT: any
 
     constructor(private crexS: Crex24Service, private funcS: Funcoes, private bittrexS: BittrexService) { }
 
@@ -907,7 +908,8 @@ export class BinanceComponent implements OnInit
         this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
         this.moCrexAscendex = await this.crexS.Ascendex()
         this.moBittrexExmo = await this.bittrexS.Exmo()
-
         this.moBittrexMexc = await this.bittrexS.MEXC()
+
+        this.moBittrexXT = await this.bittrexS.XT()
     }
 }

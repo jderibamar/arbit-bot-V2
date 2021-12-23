@@ -228,7 +228,7 @@ export class BittrexService
             moBtx = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
+            moExcluir = ['TSLAUSDT', 'IOTXUSDT', 'GLDUSDT']
             
             moBtx = await this.apiBittrex()
 
@@ -263,8 +263,8 @@ export class BittrexService
                 }
             }
 
-        // console.log('Comuns entre Crex / XT : ', Comuns)
-        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
+        // console.log('Comuns entre Bittrex / XT : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
