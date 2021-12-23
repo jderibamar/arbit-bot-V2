@@ -882,50 +882,6 @@ export class BinanceComponent implements OnInit
         this.moBinCoinField = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
-    async binWbfex()
-    {
-        let exCp = 'Wbfex',
-        exVd = 'Binance', 
-        exCp2 = 'Binance', 
-        exVd2 = 'Wbfex',
-        moComuns = [],
-        moEx2 = [],
-        moB = await this.apiBin(),
-        moExcluir = ['BONDBTC']
-
-        let apiEx2 = 'https://openapi.wbfex.biz/open/api/get_allticker',
-            ex2Data = await fetch(apiEx2),
-            ex2Dados = await ex2Data.json()
-
-            moEx2 = ex2Dados.data.ticker
-
-        for(let i in moEx2)
-        {
-            moEx2[i].symbol = moEx2[i].symbol.toUpperCase()
-        }
-
-        // console.log('Dados da Wbfex: ', moEx2)
-        // console.log('Array montado: ', moEx2)
-
-        for(let i in moB)
-        {
-            for(let j in moEx2)
-            {
-                if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
-                    moComuns
-                    .push(
-                        { 
-                            symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
-                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
-                        })
-            }
-        }
-
-        // console.log('Comuns entre Bin / Wbfex: ', moComuns)
-        // this.funcS.exlcuirMoeda(moComuns, moExcluir)
-        this.moBinCoinField = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
-    }
-
     async outrasExs()
     {
         this.moCrexExmo = await this.crexS.Exmo()

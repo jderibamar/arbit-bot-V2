@@ -323,13 +323,13 @@ export class Crex24Service
         return arrImprimir
     }
 
-    async ChangelleyPRO()
+    async ChanglleyPRO()
     {
         let moComuns = [],
-            exCp = 'ChangelleyPRO', 
+            exCp = 'ChanglleyPRO', 
             exVd = 'Crex24', 
             exCp2 = 'Crex24', 
-            exVd2 = 'ChangelleyPRO',
+            exVd2 = 'ChanglleyPRO',
 
             apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
             ex2Data = await fetch(apiEx2),
@@ -371,7 +371,7 @@ export class Crex24Service
 
         arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
