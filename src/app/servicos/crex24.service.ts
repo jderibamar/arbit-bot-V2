@@ -389,7 +389,7 @@ export class Crex24Service
             moC = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['ONEBTC', 'CROUSDT', 'ONEBTC']
+            moExcluir = ['ONEBTC', 'CROUSDT', 'SOVBTC']
             
             for(let i in ex2Dados.data)
             {
