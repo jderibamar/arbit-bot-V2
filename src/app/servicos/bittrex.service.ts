@@ -128,7 +128,7 @@ export class BittrexService
             moBtx = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['ONEBTC']        
+            moExcluir = ['IOTXUSDT']        
     
             const keys = Object.keys(ex2Dados.data.ticker)
             const values: any = Object.values(ex2Dados.data.ticker)
@@ -156,8 +156,8 @@ export class BittrexService
                 }
             }
 
-        // console.log('Comuns entre Crex / Coinex : ', Comuns)
-        // this.funcS.exlcuirMoeda(Comuns, moExcluir )
+        // console.log('Comuns entre Bittrex / Coinex : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir )
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
@@ -205,12 +205,12 @@ export class BittrexService
                 }
             }
 
-        // console.log('Comuns entre Crex / Bittrex : ', Comuns)
+        // console.log('Comuns entre Bittrex / Biconomy : ', Comuns)
         // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
@@ -315,7 +315,7 @@ export class BittrexService
                 }
             }
 
-        // console.log('Comuns entre Crex / ChanglleyPRO : ', Comuns)
+        // console.log('Comuns entre Bittrex / ChanglleyPRO : ', Comuns)
         // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
@@ -338,7 +338,7 @@ export class BittrexService
             moBtx = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['ONEBTC', 'CROUSDT', 'SOVBTC']
+            moExcluir = ['BONDUSDT']
             
             for(let i in ex2Dados.data)
             {
@@ -365,8 +365,8 @@ export class BittrexService
                 }
             }
 
-        // console.log('Comuns entre Crex / Ascendex : ', Comuns)
-        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
+        // console.log('Comuns entre Bittrex / Ascendex : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
@@ -379,7 +379,7 @@ export class BittrexService
       let api_btx = 'https://api.bittrex.com/v3/markets/tickers',
           res_btx = await fetch(api_btx),
           btx_dados = [] = await res_btx.json(),
-          arrMoedas = [] //array de moedas da Crex
+          arrMoedas = []
       
       for(let i in btx_dados)
       {
