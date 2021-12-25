@@ -2,84 +2,27 @@ import { Injectable } from '@angular/core'
 import { Funcoes } from './funcoes.service'
 
 @Injectable()
-export class BittrexService
+export class ExmoService
 {
     constructor(private funcS: Funcoes){}
-
-    async Exmo()
-    {
-      let Comuns = [],
-          exCp = 'EXMO', 
-          exVd = 'Bittrex', 
-          exCp2 = 'Bittrex', 
-          exVd2 = 'EXMO',
-
-          apiEx2 = 'https://api.exmo.com/v1.1/ticker',
-          ex2Data = await fetch(apiEx2),
-          ex2Dados = await ex2Data.json(),
-          moBtx = [],
-          moEx2 = [],
-          arrImprimir = [],
-          moExcluir = ['CRONBTC', 'CRONUSDT']
-  
-          moBtx = await this.apiBittrex()
-          // console.log('Dados da Exmo: ', ex2Dados)
-  
-      const keys = Object.keys(ex2Dados)
-      const values: any = Object.values(ex2Dados)
-  
-      for(let i in keys)
-      {
-          if(values[i].buy_price > 0 && values[i].sell_price > 0)
-              moEx2.push({ symbol: keys[i], buy: values[i].buy_price, sell: values[i].sell_price })
-      }
-  
-      for(let i in moEx2)
-      {
-          moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
-          moEx2[i].symbol = moEx2[i].symbol.toUpperCase()
-      }
-
-      for(let i in moBtx)
-        {
-            for(let j in moEx2)
-            {
-                if(moBtx[i].symbol === moEx2[j].symbol)
-                    Comuns
-                    .push(
-                        { 
-                            symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRateRate, pdVdEx1: moBtx[i].askRateRate,
-                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
-                        })
-            }
-        }
-
-        // console.log('Comuns entre Bittrex e Exmo: ', Comuns)
-        this.funcS.exlcuirMoeda(Comuns, moExcluir)
-
-        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
-
-        // console.log('Imprimir: ', arrImprimir)
-        return arrImprimir
-    }
 
     async MEXC()
     {
       let Comuns = [],
           exCp = 'MEXC', 
-          exVd = 'Bittrex', 
-          exCp2 = 'Bittrex', 
+          exVd = 'Exmo', 
+          exCp2 = 'Exmo', 
           exVd2 = 'MEXC',
 
           apiEx2 = 'https://www.mexc.com/open/api/v2/market/ticker',
           ex2Data = await fetch(apiEx2),
           ex2Dados = await ex2Data.json(),
-          moBtx = [],
+          moExm = [],
           moEx2 = [],
           arrImprimir = [],
           moExcluir = ['DFIUSDT', 'DFIUSDT', 'FLUXUSDT', 'GOLDUSDT', 'GOLDUSDT', 'IOTXUSDT', 'DNAUSDT', 'PINKUSDT', 'PRTUSDT', 'REVUSDT', 'PROSUSDT', 'DTXUSDT']
   
-          moBtx = await this.apiBittrex()
+          moExm = await this.apiExmo()
           moEx2 = ex2Dados.data
           // console.log('Dados da Exmo: ', ex2Dados)
   
@@ -88,24 +31,22 @@ export class BittrexService
            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
         }
 
-      for(let i in moBtx)
+      for(let i in moExm)
         {
             for(let j in moEx2)
             {
-                if(moBtx[i].symbol === moEx2[j].symbol)
+                if(moExm[i].symbol === moEx2[j].symbol)
                     Comuns
                     .push(
                         { 
-                            symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                            symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                             pdCpEx2: moEx2[j].bid, pdVdEx2: moEx2[j].ask
                         })
             }
         }
 
-        // console.log('Comuns - Bittrex / MEXC : ', Comuns)
-        this.funcS.exlcuirMoeda(Comuns, moExcluir)
-
-    //   this.moBtxrexExmo = this.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
+        // console.log('Comuns - Exmo / MEXC : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
@@ -117,14 +58,14 @@ export class BittrexService
     {
         let Comuns = [],
             exCp = 'Coinex', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
+            exVd = 'Exmo', 
+            exCp2 = 'Exmo', 
             exVd2 = 'Coinex',
 
             apiEx2 = 'https://api.coinex.com/perpetual/v1/market/ticker/all',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moBtx = [],
+            moExm = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['IOTXUSDT']        
@@ -138,29 +79,29 @@ export class BittrexService
                         moEx2.push({ symbol: keys[i], buy: values[i].buy, sell: values[i].sell })
                 } 
 
-            moBtx = await this.apiBittrex()
+            moExm = await this.apiExmo()
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moBtx)
+        for(let i in moExm)
             {
                 for(let j in moEx2)
                 {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
+                    if(moExm[i].symbol === moEx2[j].symbol)
                         Comuns
                         .push(
                             { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Bittrex / Coinex : ', Comuns)
-        this.funcS.exlcuirMoeda(Comuns, moExcluir )
+        // console.log('Comuns entre Exmo / Coinex : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
@@ -168,20 +109,20 @@ export class BittrexService
     {
         let Comuns = [],
             exCp = 'Biconomy', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
+            exVd = 'Exmo', 
+            exCp2 = 'Exmo', 
             exVd2 = 'Biconomy',
 
             apiEx2 = 'https://www.biconomy.com/api/v1/tickers',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moBtx = [],
+            moExm = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
             
             moEx2 = ex2Dados.ticker
-            moBtx = await this.apiBittrex()
+            moExm = await this.apiExmo()
 
         
         for(let i in moEx2)
@@ -190,26 +131,26 @@ export class BittrexService
         }
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moBtx)
+        for(let i in moExm)
             {
                 for(let j in moEx2)
                 {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
+                    if(moExm[i].symbol === moEx2[j].symbol)
                         Comuns
                         .push(
                             { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Bittrex / Biconomy : ', Comuns)
+        // console.log('Comuns entre Exmo / Biconomy : ', Comuns)
         // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
@@ -217,19 +158,19 @@ export class BittrexService
     {
         let Comuns = [],
             exCp = 'XT', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
+            exVd = 'Exmo', 
+            exCp2 = 'Exmo', 
             exVd2 = 'XT',
 
             apiEx2 = 'https://api.xt.com/data/api/v1/getTickers',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moBtx = [],
+            moExm = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['TSLAUSDT', 'IOTXUSDT', 'GLDUSDT']
             
-            moBtx = await this.apiBittrex()
+            moExm = await this.apiExmo()
 
             const keys = Object.keys(ex2Dados)
             const values: any = Object.values(ex2Dados)
@@ -248,21 +189,21 @@ export class BittrexService
 
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moBtx)
+        for(let i in moExm)
             {
                 for(let j in moEx2)
                 {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
+                    if(moExm[i].symbol === moEx2[j].symbol)
                         Comuns
                         .push(
                             { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Bittrex / XT : ', Comuns)
+        // console.log('Comuns entre Exmo / XT : ', Comuns)
         this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
@@ -271,23 +212,23 @@ export class BittrexService
         return arrImprimir
     }
 
-    async ChangelleyPRO()
+    async changelleyPRO()
     {
         let Comuns = [],
             exCp = 'ChanglleyPRO', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
+            exVd = 'Exmo', 
+            exCp2 = 'Exmo', 
             exVd2 = 'ChanglleyPRO',
 
             apiEx2 = 'https://api.pro.changelly.com/api/3/public/ticker',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moBtx = [],
+            moExm = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
             
-            moBtx = await this.apiBittrex()
+            moExm = await this.apiExmo()
 
             const keys = Object.keys(ex2Dados)
             const values: any = Object.values(ex2Dados)
@@ -300,26 +241,26 @@ export class BittrexService
     
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moBtx)
+        for(let i in moExm)
             {
                 for(let j in moEx2)
                 {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
+                    if(moExm[i].symbol === moEx2[j].symbol)
                         Comuns
                         .push(
                             { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                                 pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
                             })
                 }
             }
 
-        // console.log('Comuns entre Bittrex / ChanglleyPRO : ', Comuns)
+        // console.log('Comuns entre Exmo / ChanglleyPRO : ', Comuns)
         // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        console.log('Imprimir: ', arrImprimir)
+        // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
@@ -327,14 +268,14 @@ export class BittrexService
     {
         let Comuns = [],
             exCp = 'Ascendex', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
+            exVd = 'Exmo', 
+            exCp2 = 'Exmo', 
             exVd2 = 'Ascendex',
 
             apiEx2 = 'https://ascendex.com/api/pro/v1/spot/ticker',
             ex2Data = await fetch(apiEx2),
             ex2Dados = await ex2Data.json(),
-            moBtx = [],
+            moExm = [],
             moEx2 = [],
             arrImprimir = [],
             moExcluir = ['BONDUSDT']
@@ -344,47 +285,59 @@ export class BittrexService
                 ex2Dados.data[i].symbol = ex2Dados.data[i].symbol.replace('/', '')
             }
 
-            moBtx = await this.apiBittrex()
+            moExm = await this.apiExmo()
             moEx2 = ex2Dados.data
     
     
             // console.log('Dados da Exmo: ', ex2Dados)
 
-        for(let i in moBtx)
+        for(let i in moExm)
             {
                 for(let j in moEx2)
                 {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
+                    if(moExm[i].symbol === moEx2[j].symbol)
                         Comuns
                         .push(
                             { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                symbol: moExm[i].symbol, pdCpEx1: moExm[i].bidRate, pdVdEx1: moExm[i].askRate,
                                 pdCpEx2: moEx2[j].bid[0], pdVdEx2: moEx2[j].ask[0]
                             })
                 }
             }
 
-        // console.log('Comuns entre Bittrex / Ascendex : ', Comuns)
-        this.funcS.exlcuirMoeda(Comuns, moExcluir)
+        // console.log('Comuns entre Exmo / Ascendex : ', Comuns)
+        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Imprimir: ', arrImprimir)
+        console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
-    async apiBittrex()
+    async apiExmo()
     {
-      let api_btx = 'https://api.bittrex.com/v3/markets/tickers',
-          res_btx = await fetch(api_btx),
-          btx_dados = [] = await res_btx.json(),
+      let api_url = 'https://api.exmo.com/v1.1/ticker',
+          res_api = await fetch(api_url),
+          api_dados = await res_api.json(),
           arrMoedas = []
       
-      for(let i in btx_dados)
-      {
-        btx_dados[i].symbol = btx_dados[i].symbol.replace('-', '')
-          arrMoedas = btx_dados
-      }
+          const keys = Object.keys(api_dados)
+          const values: any = Object.values(api_dados)
+
+          for(let i in keys)
+          {
+              if(values[i].buy_price > 0 && values[i].sell_price > 0)
+                arrMoedas.push({ symbol: keys[i], buy: values[i].buy_price, sell: values[i].sell_price })
+          }
+      
+
+          for(let i in arrMoedas)
+          {
+              arrMoedas[i].symbol = arrMoedas[i].symbol.replace('_', '')
+              arrMoedas[i].symbol = arrMoedas[i].symbol.toUpperCase()
+          }
+
+          
 
         return arrMoedas
     }

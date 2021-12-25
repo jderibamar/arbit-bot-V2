@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Funcoes } from './funcoes.service'
 
-const perc = 3
 @Injectable()
 export class Crex24Service
 {
@@ -424,6 +423,7 @@ export class Crex24Service
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
+   
 
     async apiCrex()
     {

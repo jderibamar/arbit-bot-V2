@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { Crex24Service } from '../servicos/crex24.service'
 import { Funcoes } from '../servicos/funcoes.service'
 import { BittrexService } from '../servicos/bittrex.service'
+import { ExmoService } from '../servicos/exmo.service'
 
 const temp = 3000
 
@@ -50,7 +51,7 @@ export class BinanceComponent implements OnInit
     moBittrexAscendex: any
     moBittrexBiconomy: any
 
-    constructor(private crexS: Crex24Service, private funcS: Funcoes, private bittrexS: BittrexService) { }
+    constructor(private crexS: Crex24Service, private funcS: Funcoes, private bittrexS: BittrexService, private exmoS: ExmoService) { }
 
     ngOnInit(): void 
     {
@@ -70,7 +71,7 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binNovadax() }, temp )
         setInterval( () =>{ this.binChangelleypro() }, temp )
         // setInterval( () =>{ this.binBankcex() }, temp )
-        setInterval( () =>{ this.binBiconomy() }, temp )
+        // setInterval( () =>{ this.binBiconomy() }, temp )
         setInterval( () =>{ this.binDecoin() }, temp )
         setInterval( () =>{ this.binToktok() }, temp )
         setInterval( () =>{ this.binP2pb2b() }, temp )
@@ -481,7 +482,7 @@ export class BinanceComponent implements OnInit
     for(let i in keys)
     {
         if(values[i].buy_price > 0 && values[i].sell_price > 0)
-        moEx2.push({ symbol: keys[i], buy: values[i].buy_price, sell: values[i].sell_price })
+            moEx2.push({ symbol: keys[i], buy: values[i].buy_price, sell: values[i].sell_price })
     }
 
     for(let i in moEx2)
@@ -506,9 +507,9 @@ export class BinanceComponent implements OnInit
         }
     }
 
-    // console.log('Comuns: ', moComuns)
-    // this.exlcuirMoeda(moComuns, moExcluir)
-    this.moBinExmo = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+        // console.log('Comuns: ', moComuns)
+        // this.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinExmo = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
     async binCoinDCX()
@@ -906,7 +907,7 @@ export class BinanceComponent implements OnInit
         this.moCrexMEXC = await this.crexS.MEXC()
         this.moCrexCoinex =  await this.crexS.Coinex()
         this.moCrexBittrex = await this.crexS.Bittrex()
-        this.moCrexBiconomy = await this.crexS.Biconomy()
+        // this.moCrexBiconomy = await this.crexS.Biconomy()
         this.moCrexXT = await this.crexS.XT()
         this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
         this.moCrexAscendex = await this.crexS.Ascendex()
@@ -915,10 +916,10 @@ export class BinanceComponent implements OnInit
         this.moBittrexMexc = await this.bittrexS.MEXC()
         this.moBittrexXT = await this.bittrexS.XT()
         this.moBittrexCoinex = await this.bittrexS.Coinex()
-
         this.moBittrexAscendex = await this.bittrexS.Ascendex()
 
-        // this.bittrexS.Biconomy()
+        // this.moBittrexBiconomy = await this.bittrexS.Biconomy()
+        // this.exmoS.Ascendex()
 
         // this.bittrexS.ChangelleyPRO()
     }
