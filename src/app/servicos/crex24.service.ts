@@ -424,7 +424,6 @@ export class Crex24Service
         return arrImprimir
     }
    
-
     async apiCrex()
     {
       let api_crex = 'https://api.crex24.com/v2/public/tickers',

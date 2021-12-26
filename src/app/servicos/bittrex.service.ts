@@ -164,55 +164,6 @@ export class BittrexService
         return arrImprimir
     }
 
-    async Biconomy()
-    {
-        let Comuns = [],
-            exCp = 'Biconomy', 
-            exVd = 'Bittrex', 
-            exCp2 = 'Bittrex', 
-            exVd2 = 'Biconomy',
-
-            apiEx2 = 'https://www.biconomy.com/api/v1/tickers',
-            ex2Data = await fetch(apiEx2),
-            ex2Dados = await ex2Data.json(),
-            moBtx = [],
-            moEx2 = [],
-            arrImprimir = [],
-            moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
-            
-            moEx2 = ex2Dados.ticker
-            moBtx = await this.apiBittrex()
-
-        
-        for(let i in moEx2)
-        {
-            moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
-        }
-            // console.log('Dados da Exmo: ', ex2Dados)
-
-        for(let i in moBtx)
-            {
-                for(let j in moEx2)
-                {
-                    if(moBtx[i].symbol === moEx2[j].symbol)
-                        Comuns
-                        .push(
-                            { 
-                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
-                                pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
-                            })
-                }
-            }
-
-        // console.log('Comuns entre Bittrex / Biconomy : ', Comuns)
-        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
-
-        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
-
-        // console.log('Imprimir: ', arrImprimir)
-        return arrImprimir
-    }
-
     async XT()
     {
         let Comuns = [],
@@ -285,7 +236,7 @@ export class BittrexService
             moBtx = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['BSTBTC', 'CROUSDT', 'CUTBTC', 'TYCBTC']
+            moExcluir = ['STCBTC']
             
             moBtx = await this.apiBittrex()
 
@@ -315,11 +266,11 @@ export class BittrexService
             }
 
         // console.log('Comuns entre Bittrex / ChanglleyPRO : ', Comuns)
-        // this.funcS.exlcuirMoeda(Comuns, moExcluir)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        console.log('Imprimir: ', arrImprimir)
+        // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
     }
 
@@ -368,6 +319,61 @@ export class BittrexService
         this.funcS.exlcuirMoeda(Comuns, moExcluir)
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Imprimir: ', arrImprimir)
+        return arrImprimir
+    }
+    
+    async ztb()
+    {
+      let Comuns = [],
+          exCp = 'ZTB', 
+          exVd = 'Bittrex', 
+          exCp2 = 'Bittrex', 
+          exVd2 = 'ZTB',
+
+          apiEx2 = 'https://www.ztb.im/api/v1/tickers',
+          ex2Data = await fetch(apiEx2),
+          ex2Dados = await ex2Data.json(),
+          moBtx = [],
+          moEx2 = [],
+          arrImprimir = [],
+          moExcluir = 
+          [
+            'ADABULLUSDT', 'ATOMBULLUSDT', 'BCHBULLUSDT', 'BEARUSDT', 'BLOCKUSDT', 'DOGEBULLUSDT', 'ETHBEARUSDT', 'LINKBULLUSDT', 
+            'LINKBULLUSDT', 'MATICBULLUSDT', 'GAMEUSDT', 'PROSUSDT', 'XRPBULLUSDT', 'XTZBULLUSDT', 'PRTUSDT', 'PRTUSDT', 'REALUSDT', 
+            'IOTXUSDT', 'GSTUSDT'
+          ]
+  
+          moBtx = await this.apiBittrex()
+          moEx2 = ex2Dados.ticker
+          // console.log('Dados da Exmo: ', ex2Dados)
+  
+        for(let i in moEx2)
+        {
+           moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
+        }
+
+      for(let i in moBtx)
+        {
+            for(let j in moEx2)
+            {
+                if(moBtx[i].symbol === moEx2[j].symbol)
+                    Comuns
+                    .push(
+                        { 
+                            symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                            pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                        })
+            }
+        }
+
+        // console.log('Comuns - Bittrex / ZTB : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
+
+    //   this.moBtxrexExmo = this.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
+
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
         // console.log('Imprimir: ', arrImprimir)
         return arrImprimir
