@@ -58,6 +58,7 @@ export class BinanceComponent implements OnInit
     moMexcXT: any
     moMexcChangelleyPRO: any
     moMexcAscendex: any
+    moMexcZTB: any
 
     constructor
     (
@@ -68,7 +69,7 @@ export class BinanceComponent implements OnInit
     ngOnInit(): void 
     {
         //atualizar a página cada 1 minuto
-        setInterval( () => { location.reload() }, 300000)
+        setInterval( () => { location.reload() }, 500000)
 
         setInterval( () => { this.binCrex() }, temp)
         setInterval( () => { this.binMexc() }, temp)
@@ -925,6 +926,7 @@ export class BinanceComponent implements OnInit
         this.moCrexXT = await this.crexS.XT()
         this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
         this.moCrexAscendex = await this.crexS.Ascendex()
+        this.moCrexZTB = await this.crexS.ztb()
 
         this.moBittrexExmo = await this.bittrexS.Exmo()
         this.moBittrexMexc = await this.bittrexS.MEXC()
@@ -938,8 +940,8 @@ export class BinanceComponent implements OnInit
         this.moMexcXT = await this.mexcS.XT()
         this.moMexcChangelleyPRO = await this.mexcS.ChangelleyPRO()
         this.moMexcAscendex = await this.mexcS.Ascendex()
+        this.moMexcZTB = await this.mexcS.ztb()
 
 
-        // this.exmoS.Ascendex()
     }
 }

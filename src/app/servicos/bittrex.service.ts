@@ -326,33 +326,33 @@ export class BittrexService
     
     async ztb()
     {
-      let Comuns = [],
-          exCp = 'ZTB', 
-          exVd = 'Bittrex', 
-          exCp2 = 'Bittrex', 
-          exVd2 = 'ZTB',
+        let Comuns = [],
+            exCp = 'ZTB', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
+            exVd2 = 'ZTB',
 
-          apiEx2 = 'https://www.ztb.im/api/v1/tickers',
-          ex2Data = await fetch(apiEx2),
-          ex2Dados = await ex2Data.json(),
-          moBtx = [],
-          moEx2 = [],
-          arrImprimir = [],
-          moExcluir = 
-          [
-            'ADABULLUSDT', 'ATOMBULLUSDT', 'BCHBULLUSDT', 'BEARUSDT', 'BLOCKUSDT', 'DOGEBULLUSDT', 'ETHBEARUSDT', 'LINKBULLUSDT', 
-            'LINKBULLUSDT', 'MATICBULLUSDT', 'GAMEUSDT', 'PROSUSDT', 'XRPBULLUSDT', 'XTZBULLUSDT', 'PRTUSDT', 'PRTUSDT', 'REALUSDT', 
-            'IOTXUSDT', 'GSTUSDT'
-          ]
-  
-          moBtx = await this.apiBittrex()
-          moEx2 = ex2Dados.ticker
-          // console.log('Dados da Exmo: ', ex2Dados)
-  
-        for(let i in moEx2)
-        {
-           moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
-        }
+            apiEx2 = 'https://www.ztb.im/api/v1/tickers',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moBtx = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = 
+            [
+                'ADABULLUSDT', 'ATOMBULLUSDT', 'BCHBULLUSDT', 'BEARUSDT', 'BLOCKUSDT', 'DOGEBULLUSDT', 'ETHBEARUSDT', 'LINKBULLUSDT', 
+                'LINKBULLUSDT', 'MATICBULLUSDT', 'GAMEUSDT', 'PROSUSDT', 'XRPBULLUSDT', 'XTZBULLUSDT', 'PRTUSDT', 'PRTUSDT', 'REALUSDT', 
+                'IOTXUSDT', 'GSTUSDT', 'BULLUSDT', 'ETHBULLUSDT'
+            ]
+    
+            moBtx = await this.apiBittrex()
+            moEx2 = ex2Dados.ticker
+            // console.log('Dados da Exmo: ', ex2Dados)
+    
+            for(let i in moEx2)
+            {
+                moEx2[i].symbol = moEx2[i].symbol.replace('_', '')
+            }
 
       for(let i in moBtx)
         {
@@ -370,9 +370,6 @@ export class BittrexService
 
         // console.log('Comuns - Bittrex / ZTB : ', Comuns)
         this.funcS.exlcuirMoeda(Comuns, moExcluir)
-
-    //   this.moBtxrexExmo = this.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
-
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)
 
         // console.log('Imprimir: ', arrImprimir)
