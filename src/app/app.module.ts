@@ -6,6 +6,10 @@ import { BittrexService } from './servicos/bittrex.service'
 import { ExmoService } from './servicos/exmo.service'
 import { MexcService } from './servicos/mexc.service'
 import { Funcoes } from './servicos/funcoes.service'
+
+import { OrderModule } from 'ngx-order-pipe'
+
+
 // import { SlideshowModule } from 'ng-simple-slideshow';
 
 import { AppComponent } from './app.component'
@@ -16,8 +20,8 @@ import { BinanceComponent } from './binance/binance'
     AppComponent,
     BinanceComponent
   ],
-  imports: [BrowserModule, MDBBootstrapModule, CarouselModule, WavesModule ],
+  imports: [BrowserModule, MDBBootstrapModule, CarouselModule, WavesModule, OrderModule ],
   providers: [Crex24Service, BittrexService, ExmoService, MexcService, Funcoes],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -252,7 +252,7 @@ export class MexcService
                         'HEROUSDT', 'ETH5LUSDT', 'BTC5LUSDT', 'TCTUSDT', 'FLUXUSDT', 'EOS5SUSDT', 'FLUXUSDT', 'ETH5SUSDT',
                         'DOT5SUSDT', 'PETSUSDT', 'EOS5LUSDT', 'DOT5LUSDT', 'BCH5SUSDT', 'XRP5LUSDT', 'LTC5SUSDT', 'LTC5LUSDT',
                         'TRX5SUSDT', 'BTC5SUSDT', 'BCH5LUSDT', 'XRP5SUSDT', 'TRX5LUSDT', 'PROSUSDT', 'TRADEUSDT', 'RICEUSDT',
-                        'MMUSDT', 'FREEUSDT'
+                        'MMUSDT', 'FREEUSDT', 'STARSUSDT', 'ASTROUSDT', 'EGCUSDT'
                     ]
             
             moMxc = await this.apiMexc()
@@ -286,7 +286,7 @@ export class MexcService
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        // console.log('Arbit MEXC / ZTB: ', arrImprimir)
+        console.log('Arbit MEXC / ZTB: ', arrImprimir)
         return arrImprimir
     }
 

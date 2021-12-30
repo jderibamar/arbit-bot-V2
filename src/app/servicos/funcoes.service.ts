@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-const percent = 3
+const percent = 4
 
 @Injectable()
 export class Funcoes

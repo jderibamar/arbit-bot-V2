@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, AfterViewInit, ViewChild ,OnInit } from '@angular/core'
 import { Crex24Service } from '../servicos/crex24.service'
 import { Funcoes } from '../servicos/funcoes.service'
 import { BittrexService } from '../servicos/bittrex.service'
@@ -12,8 +12,21 @@ const temp = 3000
   templateUrl: './binance.component.html',
   styleUrls: ['./binance.component.css']
 })
-export class BinanceComponent implements OnInit 
+export class BinanceComponent implements OnInit
 {
+    //código para permitir ordenação pelo clique no cabeçalho da coluna
+    key = 'lucro'
+    reverse = false
+
+    sort(key)
+    {
+        this.key = key
+        this.reverse = !this.reverse
+    }
+
+    
+    
+
     moBinMexc = []
     moBinCrex = []  
     moBinAscendEX = []
@@ -68,6 +81,7 @@ export class BinanceComponent implements OnInit
 
     ngOnInit(): void 
     {
+
         //atualizar a página cada 1 minuto
         setInterval( () => { location.reload() }, 500000)
 
@@ -77,7 +91,7 @@ export class BinanceComponent implements OnInit
         setInterval( () => { this.binBitbank() }, temp)
         setInterval( () => { this.binCoinex() }, temp)
         setInterval( () => { this.binCrossTower() }, temp)
-        setInterval( () => { this.binXt() }, temp)
+        // setInterval( () => { this.binXt() }, temp)
         setInterval( () => { this.binBittrex() }, temp)
         setInterval( () => { this.binExmo() }, temp)
         // setInterval( () => { this.binCoinDCX() }, temp)
@@ -923,21 +937,21 @@ export class BinanceComponent implements OnInit
         this.moCrexMEXC = await this.crexS.MEXC()
         this.moCrexCoinex =  await this.crexS.Coinex()
         this.moCrexBittrex = await this.crexS.Bittrex()
-        this.moCrexXT = await this.crexS.XT()
+        // this.moCrexXT = await this.crexS.XT()
         this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
         this.moCrexAscendex = await this.crexS.Ascendex()
         this.moCrexZTB = await this.crexS.ztb()
 
         this.moBittrexExmo = await this.bittrexS.Exmo()
         this.moBittrexMexc = await this.bittrexS.MEXC()
-        this.moBittrexXT = await this.bittrexS.XT()
+        // this.moBittrexXT = await this.bittrexS.XT()
         this.moBittrexCoinex = await this.bittrexS.Coinex()
         this.moBittrexAscendex = await this.bittrexS.Ascendex()
         this.moBittrexChangellyPRO = await this.bittrexS.ChangelleyPRO()
         this.moBittrexZTB = await this.bittrexS.ztb()
 
         this.moMexcCoinex = await this.mexcS.Coinex()
-        this.moMexcXT = await this.mexcS.XT()
+        // this.moMexcXT = await this.mexcS.XT()
         this.moMexcChangelleyPRO = await this.mexcS.ChangelleyPRO()
         this.moMexcAscendex = await this.mexcS.Ascendex()
         this.moMexcZTB = await this.mexcS.ztb()
