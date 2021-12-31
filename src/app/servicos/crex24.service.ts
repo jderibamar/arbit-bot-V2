@@ -438,7 +438,7 @@ export class Crex24Service
             moC = [],
             moEx2 = [],
             arrImprimir = [],
-            moExcluir = ['DRSUSDT', 'BCTUSDT', 'CHESSUSDT', 'GTCUSDT', 'TCPUSDT', 'CROUSDT', 'DONUSDT']
+            moExcluir = ['DRSUSDT', 'BCTUSDT', 'CHESSUSDT', 'GTCUSDT', 'TCPUSDT', 'CROUSDT', 'DONUSDT', 'PMCUSDT']
             
             moEx2 = ex2Dados.ticker
 

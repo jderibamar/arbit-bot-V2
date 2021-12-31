@@ -286,7 +286,7 @@ export class MexcService
 
         arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
 
-        console.log('Arbit MEXC / ZTB: ', arrImprimir)
+        // console.log('Arbit MEXC / ZTB: ', arrImprimir)
         return arrImprimir
     }
 
