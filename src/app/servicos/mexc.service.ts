@@ -290,6 +290,57 @@ export class MexcService
         return arrImprimir
     }
 
+    async fmfw()
+    {
+        let Comuns = [],
+            exCp = 'FMFW', 
+            exVd = 'Mexc', 
+            exCp2 = 'Mexc', 
+            exVd2 = 'FMFW',
+
+            apiEx2 = 'https://api.fmfw.io/api/3/public/ticker',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moMxc = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['UNOUSDT', 'BONDUSDT', 'FREEUSDT']
+            
+            moMxc = await this.apiMexc()
+
+            const keys = Object.keys(ex2Dados)
+            const values: any = Object.values(ex2Dados)
+        
+            for(let i in keys)
+            {
+                 moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+            }
+    
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moMxc)
+            {
+                for(let j in moEx2)
+                {
+                    if(moMxc[i].symbol === moEx2[j].symbol)
+                        Comuns
+                        .push(
+                            { 
+                                symbol: moMxc[i].symbol, pdCpEx1: moMxc[i].bid, pdVdEx1: moMxc[i].ask,
+                                pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Mexc / FMFW : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
+
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Arbit MEXC / FMFW: ', arrImprimir)
+        return arrImprimir
+    }
+
     async apiMexc()
     {
       let api_url = 'https://www.mexc.com/open/api/v2/market/ticker',

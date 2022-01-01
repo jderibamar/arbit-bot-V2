@@ -48,6 +48,7 @@ export class BinanceComponent implements OnInit
     moBinP2pb2b = []
     moBinCoinField = []
     moBinZTB = []
+    moBinFMFW = []
 
     //variáveis para os dados de outras Excs base
     moCrexExmo: any  
@@ -58,6 +59,7 @@ export class BinanceComponent implements OnInit
     moCrexChangellyPro: any
     moCrexAscendex: any
     moCrexZTB: any
+    moCrexFMFW: any
     
     moBittrexExmo: any
     moBittrexMexc: any
@@ -66,12 +68,14 @@ export class BinanceComponent implements OnInit
     moBittrexAscendex: any
     moBittrexChangellyPRO: any
     moBittrexZTB: any
+    moBittrexFMFW: any
     
     moMexcCoinex: any
     moMexcXT: any
     moMexcChangelleyPRO: any
     moMexcAscendex: any
     moMexcZTB: any
+    moMexcFMFW: any
 
     constructor
     (
@@ -94,7 +98,7 @@ export class BinanceComponent implements OnInit
         // setInterval( () => { this.binXt() }, temp)
         setInterval( () => { this.binBittrex() }, temp)
         setInterval( () => { this.binExmo() }, temp)
-        // setInterval( () => { this.binCoinDCX() }, temp)
+        setInterval( () => { this.binCoinDCX() }, temp)
         setInterval( () =>{ this.binNovadax() }, temp )
         setInterval( () =>{ this.binChangelleypro() }, temp )
         // setInterval( () =>{ this.binBankcex() }, temp )
@@ -103,6 +107,7 @@ export class BinanceComponent implements OnInit
         setInterval( () =>{ this.binP2pb2b() }, temp )
         setInterval( () =>{ this.binCoinField() }, temp )
         setInterval( () =>{ this.ztb() }, temp )
+        setInterval( () =>{ this.fmfw() }, temp )
 
         
         setInterval( () => { this.outrasExs() }, temp)
@@ -538,6 +543,53 @@ export class BinanceComponent implements OnInit
         this.moBinExmo = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
     }
 
+    async fmfw()
+    {
+        let exCp = 'FMFW', 
+            exVd = 'Binance', 
+            exCp2 = 'Binance', 
+            exVd2 = 'FMFW',
+            moComuns = [],
+            moEx2 = [],
+            moB = await this.apiBin(),
+            moExcluir = ['BONDBTC', 'BONDUSDT']
+
+    let apiEx2 = 'https://api.fmfw.io/api/3/public/ticker',
+        ex2Data = await fetch(apiEx2),
+        ex2Dados = await ex2Data.json()
+
+        // console.log('Dados da Exmo: ', ex2Dados)
+
+    const keys = Object.keys(ex2Dados)
+    const values: any = Object.values(ex2Dados)
+
+    for(let i in keys)
+    {
+        // if(values[i].bid > 0 && values[i].ask > 0)
+            moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+    }
+
+    for(let i in moB)
+    {
+        for(let j in moEx2)
+        {
+            if(moB[i].symbol === moEx2[j].symbol && moB[i].bidPrice > 0 && moB[i].askPrice > 0)
+                moComuns
+                .push(
+                    { 
+                        symbol: moB[i].symbol, pdCpEx1: moB[i].bidPrice, pdVdEx1: moB[i].askPrice, 
+                        pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                    })
+        }
+    }
+
+        // console.log('Comuns entre Binance / FMFW: ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+        this.moBinFMFW = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)
+
+        // console.log('Arbit Bin / Fmfw: ', this.moBinFMFW)
+    }
+
     async binCoinDCX()
     {
         let exCp = 'CoinDCX', 
@@ -941,6 +993,7 @@ export class BinanceComponent implements OnInit
         this.moCrexChangellyPro = await this.crexS.ChangelleyPRO()
         this.moCrexAscendex = await this.crexS.Ascendex()
         this.moCrexZTB = await this.crexS.ztb()
+        this.moCrexFMFW = await this.crexS.fmfw()
 
         this.moBittrexExmo = await this.bittrexS.Exmo()
         this.moBittrexMexc = await this.bittrexS.MEXC()
@@ -949,13 +1002,13 @@ export class BinanceComponent implements OnInit
         this.moBittrexAscendex = await this.bittrexS.Ascendex()
         this.moBittrexChangellyPRO = await this.bittrexS.ChangelleyPRO()
         this.moBittrexZTB = await this.bittrexS.ztb()
+        this.moBittrexFMFW = await this.bittrexS.fmfw()
 
         this.moMexcCoinex = await this.mexcS.Coinex()
         // this.moMexcXT = await this.mexcS.XT()
         this.moMexcChangelleyPRO = await this.mexcS.ChangelleyPRO()
         this.moMexcAscendex = await this.mexcS.Ascendex()
         this.moMexcZTB = await this.mexcS.ztb()
-
-
+        this.moMexcFMFW = await this.mexcS.fmfw()
     }
 }

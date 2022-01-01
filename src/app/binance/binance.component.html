@@ -78,14 +78,14 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
-        <tr *ngFor="let moeda of moBinXt">
+        <!-- <tr *ngFor="let moeda of moBinXt">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>
             <td> {{ moeda.pdVd }} </td>
             <td> {{ moeda.pdCp }} </td>
             <td> {{ moeda.lucro }} </td>
-        </tr>
+        </tr> -->
 
         <tr *ngFor="let moeda of moBinBittrex">
             <td> {{ moeda.symbol }} </td>
@@ -105,6 +105,25 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
+        <tr *ngFor="let moeda of moBinCoindcx">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
+        <tr *ngFor="let moeda of moBinFMFW">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
+        <!-- INÍCIO DA CREX  -->
         <tr *ngFor="let moeda of moCrexExmo">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
@@ -231,6 +250,15 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
+        <tr *ngFor="let moeda of moCrexFMFW">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
         <tr *ngFor="let moeda of moCrexXT">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
@@ -303,6 +331,15 @@
             <td> {{ moeda.lucro }} </td>
         </tr>
 
+        <tr *ngFor="let moeda of moBittrexFMFW">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
         <tr *ngFor="let moeda of moMexcCoinex">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
@@ -340,6 +377,15 @@
         </tr>
 
         <tr *ngFor="let moeda of moMexcZTB">
+            <td> {{ moeda.symbol }} </td>
+            <td> {{ moeda.excCp }} </td>
+            <td> {{ moeda.excVd }} </td>
+            <td> {{ moeda.pdVd }} </td>
+            <td> {{ moeda.pdCp }} </td>
+            <td> {{ moeda.lucro }} </td>
+        </tr>
+
+        <tr *ngFor="let moeda of moMexcFMFW">
             <td> {{ moeda.symbol }} </td>
             <td> {{ moeda.excCp }} </td>
             <td> {{ moeda.excVd }} </td>

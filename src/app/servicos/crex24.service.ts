@@ -374,6 +374,57 @@ export class Crex24Service
         return arrImprimir
     }
 
+    async fmfw()
+    {
+        let moComuns = [],
+            exCp = 'FMFW', 
+            exVd = 'Crex24', 
+            exCp2 = 'Crex24', 
+            exVd2 = 'FMFW',
+
+            apiEx2 = 'https://api.fmfw.io/api/3/public/ticker',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moC = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['GTCBTC', 'ONEBTC', 'SUPERBTC']
+            
+            moC = await this.apiCrex()
+
+            const keys = Object.keys(ex2Dados)
+            const values: any = Object.values(ex2Dados)
+    
+            for(let i in keys)
+            {
+                moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+            }
+    
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moC)
+            {
+                for(let j in moEx2)
+                {
+                    if(moC[i].instrument === moEx2[j].symbol)
+                        moComuns
+                        .push(
+                            { 
+                                symbol: moC[i].instrument, pdCpEx1: moC[i].bid, pdVdEx1: moC[i].ask,
+                                pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Crex / FMFW : ', moComuns)
+        this.funcS.exlcuirMoeda(moComuns, moExcluir)
+
+        arrImprimir = this.funcS.pdCpVd(moComuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Arbit Crex / FMFW: ', arrImprimir)
+        return arrImprimir
+    }
+
     async Ascendex()
     {
         let moComuns = [],

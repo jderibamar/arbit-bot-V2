@@ -274,6 +274,57 @@ export class BittrexService
         return arrImprimir
     }
 
+    async fmfw()
+    {
+        let Comuns = [],
+            exCp = 'FMFW', 
+            exVd = 'Bittrex', 
+            exCp2 = 'Bittrex', 
+            exVd2 = 'FMFW',
+
+            apiEx2 = 'https://api.fmfw.io/api/3/public/ticker',
+            ex2Data = await fetch(apiEx2),
+            ex2Dados = await ex2Data.json(),
+            moBtx = [],
+            moEx2 = [],
+            arrImprimir = [],
+            moExcluir = ['BONDUSDT', 'STCBTC']
+            
+            moBtx = await this.apiBittrex()
+
+            const keys = Object.keys(ex2Dados)
+            const values: any = Object.values(ex2Dados)
+    
+            for(let i in keys)
+            {
+                moEx2.push({ symbol: keys[i], buy: values[i].bid, sell: values[i].ask })
+            }
+    
+            // console.log('Dados da Exmo: ', ex2Dados)
+
+        for(let i in moBtx)
+            {
+                for(let j in moEx2)
+                {
+                    if(moBtx[i].symbol === moEx2[j].symbol)
+                        Comuns
+                        .push(
+                            { 
+                                symbol: moBtx[i].symbol, pdCpEx1: moBtx[i].bidRate, pdVdEx1: moBtx[i].askRate,
+                                pdCpEx2: moEx2[j].buy, pdVdEx2: moEx2[j].sell
+                            })
+                }
+            }
+
+        // console.log('Comuns entre Bittrex / FMFW : ', Comuns)
+        this.funcS.exlcuirMoeda(Comuns, moExcluir)
+
+        arrImprimir = this.funcS.pdCpVd(Comuns, exCp, exVd, exCp2, exVd2)        
+
+        // console.log('Arbit Bittrex / FMFW: ', arrImprimir)
+        return arrImprimir
+    }
+
     async Ascendex()
     {
         let Comuns = [],
